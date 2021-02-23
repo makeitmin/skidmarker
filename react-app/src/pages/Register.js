@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Register = () => {
+function Register(){
+
     return (
         <>
             <h2>Register</h2>
@@ -9,7 +10,7 @@ const Register = () => {
                 <input type="text" placeholder="Enter Email Address" /><br/>
                 Password<br/>
                 <input type="password" placeholder="Enter Password" /><br/>
-                <button type="submit">제출</button>
+                <button type="submit">가입하기</button>
             </form>
         </>
     );
