@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Register(){
     const [email, setEmail] = useState();
@@ -12,6 +13,15 @@ function Register(){
         setPassword(e.target.value);
     }
 
+    function handleClick(){
+        var data = {user_email: email, user_password: password};
+        axios.post("http://localhost:5000/auth/register", data)
+            .then(console.log('전송 성공!'))
+            .catch((err) => {
+                console.log('전송 에러');
+            })
+    }
+
     return (
         <>
             <h2>Register</h2>
@@ -20,7 +30,7 @@ function Register(){
                 <input type="text" onChange={handleChangeEmail} placeholder="Enter Email Address" /><br/>
                 Password<br/>
                 <input type="password" onChange={handleChangePassword} placeholder="Enter Password" /><br/>
-                <button type="submit">가입하기</button>
+                <button onClick={handleClick}>가입하기</button>
             </form>
         </>
     );

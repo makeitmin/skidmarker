@@ -31,14 +31,18 @@ def index():
 # 회원가입/로그인 API 구현하기
 
 ## 회원가입 API
-@app.route('/auth/register', methods=('GET', 'POST'))
+@app.route('/auth/register', methods=['GET', 'POST'])
 def register():
     
     if request.method == 'POST':
         
         # user_email, user_password 받아오기
+        data = request.get_json()
         
         error = None
+
+        user_email = data['user_email']
+        user_password = data['user_password']
 
         # 유효성 검증 - null 일 경우
         if not user_email:
