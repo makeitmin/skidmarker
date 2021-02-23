@@ -14,9 +14,13 @@ function Register(){
     }
 
     function handleClick(){
+
         var data = {user_email: email, user_password: password};
+        
         axios.post("http://localhost:5000/auth/register", data)
-            .then(console.log('전송 성공!'))
+            .then(function (){
+                console.log(data);
+            })
             .catch((err) => {
                 console.log('전송 에러');
             })
