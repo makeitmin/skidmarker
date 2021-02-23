@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import { Register } from '../pages';
+import { Register, Login } from '../pages';
 
 class App extends Component {
     render() {
         return (
             <div>
+                <Route exact path="/" component={Home}/>
                 <Switch>
-                    <Route exact path="/" component={Register}/>
+                    <Route path="/register" component={Register}/>
                 </Switch>
             </div>
         );
