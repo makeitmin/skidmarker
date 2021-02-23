@@ -1,1 +1,3 @@
 skidmarker-env/
+react-app/node_modules/
+react-app/.gitignore
