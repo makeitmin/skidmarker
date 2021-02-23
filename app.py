@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import reqparse, abort, Api, Resource
 
 import pymysql
@@ -24,6 +24,10 @@ db = pymysql.connect(
     )
 cursor = db.cursor()
 
+@app.route('/')
+def index():
+    return render_template('/auth/register.html')
+
 # 회원가입/로그인 API 구현하기
 
 ## 회원가입 API
@@ -32,8 +36,7 @@ def register():
     
     if request.method == 'POST':
         
-        user_email = request.form['user_email']
-        user_password = request.form['user_password']
+        # user_email, user_password 받아오기
         
         error = None
 
