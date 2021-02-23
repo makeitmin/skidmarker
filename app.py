@@ -1,17 +1,18 @@
 from flask import Flask, render_template
-from flask_restful import reqparse, abort, Api, Resource
+from flask_restful import reqparse, abort, Resource
 
 import pymysql
 
 from flask import jsonify
 from flask import request
 from flask import session
+from flask_cors import CORS
 
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
-api = Api(app)
+CORS(app)
 
 # MySQL DB 연결
 db = pymysql.connect(
@@ -31,14 +32,18 @@ def index():
 # 회원가입/로그인 API 구현하기
 
 ## 회원가입 API
-@app.route('/auth/register', methods=('GET', 'POST'))
+@app.route('/auth/register', methods=['GET', 'POST'])
 def register():
     
     if request.method == 'POST':
         
         # user_email, user_password 받아오기
-        
+        data = request.get_json()
+
         error = None
+
+        user_email = data.get('user_email')
+        user_password = data.get('user_password')
 
         # 유효성 검증 - null 일 경우
         if not user_email:
@@ -48,7 +53,7 @@ def register():
             error = 'Password가 유효하지 않습니다.'
 
         # 유효성 검증 - 기존 회원일 경우
-        sql = 'SELECT user_id FROM user WHERE user_email = %s'
+        sql = 'SELECT `user_id` FROM `user` WHERE `user_email`=%s'
         cursor.execute(sql, (user_email,))
         result = cursor.fetchone()
 
