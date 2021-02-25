@@ -70,5 +70,44 @@ def register():
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
 
+## 로그인 API
+@app.route('/auth/login', methods=('GET', 'POST'))
+def login():
+    
+    if request.method == 'POST':
+
+         # user_email, user_password 받아오기
+        data = request.get_json()
+        
+        error = None
+        
+        user_email = data.get('user_email')
+        user_password = data.get('user_password')
+
+        sql = 'SELECT `user_email`, `user_password` FROM `user` WHERE `user_email` = %s'
+        cursor.execute(sql, (user_email,))
+        user = cursor.fetchone()
+        
+        
+        # 유효성 검증 - null 일 경우
+        if user is None:
+            error = '등록되지 않은 계정입니다.'
+        
+        # 유효성 검증 - 비밀번호가 틀렸을 경우
+        # user는 tuple 타입으로 데이터 반환, user[0]은 email user[1]은 password 
+        if not (user == None or check_password_hash(user[1], user_password)):
+            error = 'password가 틀렸습니다.'
+        
+
+        if error is None:
+            # 로그인을 위해 기존 session 제거
+            session.clear()
+            # 로그인한 유저의 정보로 session 등록합니다.
+            session['user_id'] = user[0]
+            return jsonify(status = "success", result = {"email": user_email, "session": session['user_id']})
+    
+    # 유효성 검증 미통과 시 에러 메세지 반환
+    return jsonify(status = "fail", result = {"error": error})
+
 if __name__ == '__main__':
     app.run()
