@@ -71,6 +71,9 @@ def register():
     return jsonify(status = "fail", result = {"error": error})
 
 ## 로그인 API
+
+app.config.from_mapping(SECRET_KEY='dev')
+
 @app.route('/auth/login', methods=('GET', 'POST'))
 def login():
     
