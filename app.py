@@ -112,5 +112,11 @@ def login():
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
 
+@app.route('/auth/logout')
+def logout():
+    # 현재 session을 비워줍니다.
+    session.clear()
+    return jsonify(status = "success", result = {"msg": "logout!"})
+
 if __name__ == '__main__':
     app.run()
