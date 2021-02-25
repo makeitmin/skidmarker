@@ -13,8 +13,8 @@ function Register(){
         setPassword(e.target.value);
     }
 
-    function handleClick(){
-
+    function handleSubmit(e) {
+        e.preventDefault();
         var data = {user_email: email, user_password: password};
         
         axios.post("http://localhost:5000/auth/register", data)
@@ -29,12 +29,12 @@ function Register(){
     return (
         <>
             <h2>Register</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 Email Address<br/>
                 <input type="text" onChange={handleChangeEmail} placeholder="Enter Email Address" /><br/>
                 Password<br/>
                 <input type="password" onChange={handleChangePassword} placeholder="Enter Password" /><br/>
-                <button onClick={handleClick}>가입하기</button>
+                <button type='submit'>가입하기</button>
             </form>
         </>
     );

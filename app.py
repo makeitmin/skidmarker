@@ -27,14 +27,14 @@ cursor = db.cursor()
 
 @app.route('/')
 def index():
-    return render_template('/auth/register.html')
+    return ''
 
 # 회원가입/로그인 API 구현하기
 
 ## 회원가입 API
 @app.route('/auth/register', methods=['GET', 'POST'])
 def register():
-    
+    print(request)
     if request.method == 'POST':
         
         # user_email, user_password 받아오기
