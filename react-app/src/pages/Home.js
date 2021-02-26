@@ -9,10 +9,15 @@ function Home(){
     const [token, setToken] = useState();
 
     useEffect(() => {
-        axios.get("http://localhost:5000/protected")
-        .then(function (response){
-            console.log(response);
+        const api_url = "http://localhost:5000/";
+        const token = localStorage.getItem("token");
+        axios.get(api_url + "protected", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
+        .then((res) => {console.log(res.data);}
+        )
     }, [])
 
     return (

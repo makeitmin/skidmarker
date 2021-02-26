@@ -13,7 +13,7 @@ function Login(props){
     const [token, setToken] = useState();
     
     useEffect(() => {
-        window.sessionStorage.setItem("token", JSON.stringify(token))
+        window.sessionStorage.setItem("token", token)
     }, [token])
 
     function handleChangeEmail(e){
@@ -37,11 +37,12 @@ function Login(props){
                 console.log(response);
                 var res = response.data.access_token
                 setToken(res);
+                props.history.replace("/home");
             })
             .catch((err) => {
                 console.log('전송 에러');
             })
-        props.history.push("/home");
+        
     }
     
     return (
