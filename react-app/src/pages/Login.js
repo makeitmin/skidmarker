@@ -4,7 +4,7 @@ import axios from 'axios';
 import Home from "./Home"
 import Register from "./Register"
 
-import { Button, Form } from 'react-bootstrap';
+import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 import './Login.css'
 
 function Login(props){
@@ -45,7 +45,24 @@ function Login(props){
     
     return (
         <>
-            RacerIn
+            <Row>
+            <Col md='auto'>
+                RacerIn
+            </Col>
+            <Col style={{textAlign: "left"}}>
+                <Nav className="justify-content-end" activeKey="/home">
+                    <Nav.Item>
+                    <Nav.Link href="/home">메인</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                    <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                    <Nav.Link eventKey="/logout">로그아웃</Nav.Link>
+                </Nav.Item>
+            </Nav>
+            </Col>
+            </Row>
             <center>
                 <form onSubmit={handleSubmit} action="/home">
                     
