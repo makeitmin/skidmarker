@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Home from "./Home"
 import Register from "./Register"
+
+import { Button, Form } from 'react-bootstrap';
+import './Login.css'
 
 function Login() {
     const [comp, setComp] = useState(Home);
@@ -22,25 +25,31 @@ function Login() {
         var data = {user_email: email, user_password: password};
         
         axios.post("http://localhost:5000/auth/login", data)
-            .then(function (){
-                console.log(data);
+            .then(function (response){
+                console.log('전송 성공');
             })
             .catch((err) => {
                 console.log('전송 에러');
             })
     }
-
+    
     return (
         <>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                Email Address<br/>
-                <input type="text" onChange={handleChangeEmail} placeholder="Enter Email Address" /><br/>
-                Password<br/>
-                <input type="password" onChange={handleChangePassword} placeholder="Enter Password" /><br/>
-                <button type="submit">로그인</button>
-                <button onClick={() => setComp(Register)}>회원가입</button>
-            </form>
+            RacerIn
+            <center>
+                <form onSubmit={handleSubmit}>
+                    
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="text" onChange={handleChangeEmail} placeholder="Enter Email Address" />
+                    
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" onChange={handleChangePassword} placeholder="Enter Password" />
+                    
+                    <Button variant="primary" type="submit">로그인</Button><br /><br />
+                    <Button variant="light" onClick={() => setComp(Register)}>회원가입</Button>
+                                
+                </form>
+            </center>
         </>
     );
 };
