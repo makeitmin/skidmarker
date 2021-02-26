@@ -41,6 +41,7 @@ function Login(props){
             .catch((err) => {
                 console.log('전송 에러');
             })
+        props.history.push("/home");
     }
     
     return (
