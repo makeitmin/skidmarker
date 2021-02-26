@@ -6,6 +6,15 @@ import rachel from './rachel.gif';
 
 function Home(){
     
+    const [token, setToken] = useState();
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/protected")
+        .then(function (response){
+            console.log(response);
+        })
+    }, [])
+
     return (
         <>
             <Row>
@@ -21,7 +30,7 @@ function Home(){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    <Nav.Link eventKey="/logout">로그아웃</Nav.Link>
+                    <Nav.Link eventKey="/login">로그아웃</Nav.Link>
                 </Nav.Item>
             </Nav>
             </Col>
