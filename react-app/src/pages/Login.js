@@ -11,6 +11,11 @@ function Login() {
     const [comp, setComp] = useState(Home);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [token, setToken] = useState('');
+    
+    useEffect(() => {
+        window.localStorage.setItem("token", JSON.stringify(token))
+      }, [token])
 
     function handleChangeEmail(e){
         setEmail(e.target.value);
@@ -26,7 +31,7 @@ function Login() {
         
         axios.post("http://localhost:5000/auth/login", data)
             .then(function (response){
-                console.log('전송 성공');
+                setToken(response.data.access_token);
             })
             .catch((err) => {
                 console.log('전송 에러');
