@@ -35,6 +35,12 @@ cursor = db.cursor()
 def index():
     return ''
 
+# 홈 API 구현하기
+@app.route('/home')
+def home():
+
+    return ''
+
 # 회원가입/로그인 API 구현하기
 
 ## 회원가입 API
@@ -108,10 +114,17 @@ def login():
         
         if error is None:
             access_token = create_access_token(identity = user_email, expires_delta = False)
-            return jsonify(result = "success", access_token = access_token)
+            return jsonify(result = "success", access_token = access_token, user_email = user_email)
         
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
+
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user)
+    
 
 if __name__ == '__main__':
     app.run()
