@@ -4,7 +4,7 @@ import { Nav, Card, Row, Col, Button } from 'react-bootstrap'
 
 import rachel from './rachel.gif';
 
-function Home(){
+function Home(props){
     
     const [user, setUser] = useState();
 
@@ -19,6 +19,11 @@ function Home(){
             setUser(response.data.logged_in_as);
         })
     }, [])
+
+    function logout(){
+        sessionStorage.removeItem('token');
+        props.history.replace('/login');
+    }
 
     return (
         <>
@@ -35,7 +40,7 @@ function Home(){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    <Nav.Link eventKey="/login">로그아웃</Nav.Link>
+                    <Nav.Link onClick={logout} eventKey="/">로그아웃</Nav.Link>
                 </Nav.Item>
             </Nav>
             </Col>
