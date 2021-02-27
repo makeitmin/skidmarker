@@ -76,7 +76,7 @@ def register():
         # 유효성 검증 통과 시 DB에 회원정보 등록
         if error is None:
             sql = "INSERT INTO `user` (`user_email`, `user_password`,`user_name`) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (user_email, generate_password_hash(user_password), user_name)) # user_password 암호화
+            cursor.execute(sql, (user_email, generate_password_hash(user_password), user_name,)) # user_password 암호화
             db.commit()
             return jsonify(status = "success", result = {"user_email": user_email, "user_password": user_password, "user_name": user_name})
 
