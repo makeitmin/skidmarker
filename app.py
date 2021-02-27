@@ -122,7 +122,7 @@ def login():
 
 # 사용자 인증 API
 
-@app.route("/auth/user", methods=["GET"])
+@app.route("/auth/info", methods=["GET"])
 @jwt_required()
 def protected():
 
