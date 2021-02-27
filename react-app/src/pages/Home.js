@@ -25,14 +25,14 @@ function Home(props){
     }, [])
 
     function logout(){
-        sessionStorage.removeItem('token');
-        props.history.replace('/login');
+        sessionStorage.removeItem("token");
+        props.history.replace("/login");
     }
 
     return (
         <>
             <Row>
-            <Col md='auto'>
+            <Col md="auto">
                 RacerIn
             </Col>
             <Col style={{textAlign: "left"}}>
@@ -50,8 +50,8 @@ function Home(props){
             </Col>
             </Row>
             <Row>
-                <Col md='auto'>
-                    <Card style={{ width: '18rem' }}>
+                <Col md="auto">
+                    <Card style={{ width: "18rem" }}>
                         <Card.Img variant="top" src={rachel} />
                         <Card.Body>
                         <Card.Title><strong>{userName}</strong></Card.Title>
@@ -103,6 +103,7 @@ function Home(props){
                     </Card>
                 </Col>
             </Row>
+            
             
         </>
     );
