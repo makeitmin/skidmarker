@@ -38,7 +38,7 @@ function Register(props){
     return (
         <>
             <Row>
-            <Col md='auto'>
+            <Col md="auto">
                 RacerIn
             </Col>
             <Col style={{textAlign: "left"}}>

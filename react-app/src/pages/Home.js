@@ -104,7 +104,6 @@ function Home(props){
                 </Col>
             </Row>
             
-            
         </>
     );
 };

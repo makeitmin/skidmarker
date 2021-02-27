@@ -10,7 +10,7 @@ class App extends Component {
         return (
             <>
                 {
-                    !sessionStorage.getItem('token') ? <Redirect to='/login' /> : ''
+                    !sessionStorage.getItem("token") ? <Redirect to="/login" /> : ""
                 }
                 <Route exact path="/login" component={Login}/>
                 <Switch>

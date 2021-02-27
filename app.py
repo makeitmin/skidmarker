@@ -46,7 +46,7 @@ def home():
 ## 회원가입 API
 @app.route('/auth/register', methods=['GET', 'POST'])
 def register():
-    print(request)
+    
     if request.method == 'POST':
         
         # user_email, user_password 받아오기
@@ -94,7 +94,6 @@ def login():
 
          # user_email, user_password 받아오기
         data = request.get_json()
-        print(data)
         
         error = None
         
@@ -121,17 +120,21 @@ def login():
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
 
+# 사용자 인증 API
+
 @app.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
+
     current_user = get_jwt_identity()
 
     sql = 'SELECT `user_id`, `user_email`, `user_name` FROM `user` WHERE `user_email` = %s'
     cursor.execute(sql, (current_user,))
     user_auth = cursor.fetchone()
     
-    print(user_auth)
+    # 홈 화면에서 사용자 정보 표시를 위해 user_id, user_name, user_email 반환
     return jsonify(user_id=user_auth[0], user_email=user_auth[1], user_name=user_auth[2])
+
 
 if __name__ == '__main__':
     app.run()
