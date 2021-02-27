@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
+import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
 import './Login.css'
 
 function Register(props){
@@ -23,7 +23,7 @@ function Register(props){
 
     function handleSubmit(e) {
         e.preventDefault();
-        var data = {user_email: email, user_password: password};
+        var data = {user_email: email, user_password: password, user_name: name};
         
         axios.post("http://localhost:5000/auth/register", data)
             .then(function (){
