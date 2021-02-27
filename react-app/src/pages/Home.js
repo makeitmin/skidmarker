@@ -6,6 +6,20 @@ import rachel from './rachel.gif';
 
 function Home(){
     
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        axios.get("http://localhost:5000/protected", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(function(response){
+            setUser(response.data.logged_in_as);
+        })
+    }, [])
+
     return (
         <>
             <Row>
@@ -21,7 +35,7 @@ function Home(){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    <Nav.Link eventKey="/logout">로그아웃</Nav.Link>
+                    <Nav.Link eventKey="/login">로그아웃</Nav.Link>
                 </Nav.Item>
             </Nav>
             </Col>
@@ -31,9 +45,11 @@ function Home(){
                     <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={rachel} />
                         <Card.Body>
-                        <Card.Title>하성민</Card.Title>
+                        <Card.Title>{user}</Card.Title>
                         <Card.Text>
-                            엘리스 AI 트랙 1기
+                            엘리스 AI 트랙 1기<br />
+                            미니 프로젝트 1팀<br />
+                            레이서 포트폴리오 2팀
                         </Card.Text>
                         </Card.Body>
                     </Card>
