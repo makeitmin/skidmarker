@@ -8,6 +8,7 @@ import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 import './Login.css'
 
 function Login(props){
+
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [token, setToken] = useState();
@@ -34,13 +35,12 @@ function Login(props){
         
         axios.post("http://localhost:5000/auth/login", data)
             .then(function (response){
-                console.log(response);
                 var res = response.data.access_token
                 setToken(res);
                 props.history.replace("/home");
             })
             .catch((err) => {
-                console.log('전송 에러');
+                console.log("전송 에러");
             })
         
     }
@@ -48,7 +48,7 @@ function Login(props){
     return (
         <>
             <Row>
-            <Col md='auto'>
+            <Col md="auto">
                 RacerIn
             </Col>
             <Col style={{textAlign: "left"}}>
