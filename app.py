@@ -115,7 +115,7 @@ def login():
             error = 'password가 틀렸습니다.'
         
         if error is None:
-            access_token = create_access_token(identity = user[2])
+            access_token = create_access_token(identity = user[0])
             return jsonify(result = "success", access_token = access_token, user_email = user_email)
         
     # 유효성 검증 미통과 시 에러 메세지 반환
@@ -125,8 +125,13 @@ def login():
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user)
+
+    sql = 'SELECT `user_id`, `user_email`, `user_name` FROM `user` WHERE `user_email` = %s'
+    cursor.execute(sql, (current_user,))
+    user_auth = cursor.fetchone()
     
+    print(user_auth)
+    return jsonify(user_id=user_auth[0], user_email=user_auth[1], user_name=user_auth[2])
 
 if __name__ == '__main__':
     app.run()
