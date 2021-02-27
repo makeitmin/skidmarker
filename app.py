@@ -101,7 +101,7 @@ def login():
         user_email = data.get('user_email')
         user_password = data.get('user_password')
 
-        sql = 'SELECT `user_email`, `user_password` FROM `user` WHERE `user_email` = %s'
+        sql = 'SELECT `user_email`, `user_password`, `user_name` FROM `user` WHERE `user_email` = %s'
         cursor.execute(sql, (user_email,))
         user = cursor.fetchone()
         
@@ -115,7 +115,7 @@ def login():
             error = 'password가 틀렸습니다.'
         
         if error is None:
-            access_token = create_access_token(identity = user_email)
+            access_token = create_access_token(identity = user[2])
             return jsonify(result = "success", access_token = access_token, user_email = user_email)
         
     # 유효성 검증 미통과 시 에러 메세지 반환
