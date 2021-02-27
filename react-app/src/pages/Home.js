@@ -4,9 +4,11 @@ import { Nav, Card, Row, Col, Button } from 'react-bootstrap'
 
 import rachel from './rachel.gif';
 
-function Home(){
+function Home(props){
     
-    const [user, setUser] = useState();
+    const [userId, setUserId] = useState();
+    const [userEmail, setUserEmail] = useState();
+    const [userName, setUserName] = useState();
 
     useEffect(() => {
         const token = sessionStorage.getItem("token");
@@ -16,14 +18,21 @@ function Home(){
             },
         })
         .then(function(response){
-            setUser(response.data.logged_in_as);
+            setUserId(response.data.user_id);
+            setUserEmail(response.data.user_email);
+            setUserName(response.data.user_name);
         })
     }, [])
+
+    function logout(){
+        sessionStorage.removeItem("token");
+        props.history.replace("/login");
+    }
 
     return (
         <>
             <Row>
-            <Col md='auto'>
+            <Col md="auto">
                 RacerIn
             </Col>
             <Col style={{textAlign: "left"}}>
@@ -35,18 +44,19 @@ function Home(){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    <Nav.Link eventKey="/login">로그아웃</Nav.Link>
+                    <Nav.Link onClick={logout} eventKey="/">로그아웃</Nav.Link>
                 </Nav.Item>
             </Nav>
             </Col>
             </Row>
             <Row>
-                <Col md='auto'>
-                    <Card style={{ width: '18rem' }}>
+                <Col md="auto">
+                    <Card style={{ width: "18rem" }}>
                         <Card.Img variant="top" src={rachel} />
                         <Card.Body>
-                        <Card.Title>{user}</Card.Title>
+                        <Card.Title><strong>{userName}</strong></Card.Title>
                         <Card.Text>
+                            {userEmail}<br />
                             엘리스 AI 트랙 1기<br />
                             미니 프로젝트 1팀<br />
                             레이서 포트폴리오 2팀
