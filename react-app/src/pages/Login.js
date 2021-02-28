@@ -60,7 +60,7 @@ function Login(props){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    <Nav.Link eventKey="/logout">로그아웃</Nav.Link>
+                    <Nav.Link eventKey="/login">로그인</Nav.Link>
                 </Nav.Item>
             </Nav>
             </Col>
