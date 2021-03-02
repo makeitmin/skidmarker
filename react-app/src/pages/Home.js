@@ -9,9 +9,7 @@ import './style.css';
 import rachel from './rachel.gif';
 
 function EducationForm(props){
-    const [school, setSchool] = useState();
-    const [major, setMajor] = useState();
-    const [degree, setDegree] = useState();
+    
     return(
         <>
             <Form>
@@ -51,9 +49,6 @@ function EducationForm(props){
 
 function AwardForm(){
 
-    const [award, setAward] = useState();
-    const [awardDetail, setAwardDetail] = useState();
-
     return(
         <>
             <Form>
@@ -69,12 +64,6 @@ function AwardForm(){
 }
 
 function ProjectForm(){
-
-    const [project, setProject] = useState();
-    const [projectDetail, setProjectDetail] = useState();
-
-    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
-    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
 
     return(
         <>
@@ -107,10 +96,6 @@ function ProjectForm(){
 
 function CertiForm(){
 
-    const [cert, setCert] = useState();
-    const [certInst, setCertInst] = useState();
-    const [certDate, setCertDate] = useState(new Date());
-
     return(
         <>
             <Form>
@@ -132,12 +117,29 @@ function Home(props){
     const [userEmail, setUserEmail] = useState();
     const [userName, setUserName] = useState();
 
+    const [school, setSchool] = useState();
+    const [major, setMajor] = useState();
+    const [degree, setDegree] = useState();
+
+    const [award, setAward] = useState();
+    const [awardDetail, setAwardDetail] = useState();
+
+    const [project, setProject] = useState();
+    const [projectDetail, setProjectDetail] = useState();
+
+    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
+    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
+
+    const [cert, setCert] = useState();
+    const [certInst, setCertInst] = useState();
+    const [certDate, setCertDate] = useState(new Date());
+
     const [toggle, setToggle] = useState();
 
     var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm />);
+        inputForm = (<EducationForm school={setSchool} major={setMajor} degree={setDegree} />);
 
     } else if (toggle === "award"){
         inputForm = (<AwardForm />);
