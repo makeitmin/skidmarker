@@ -107,14 +107,28 @@ function EducationForm(props){
     )
 }
 
-function AwardForm(){
-    const [award, setAward] = useState();
-    const [awardDetail, setAwardDetail] = useState();
+function AwardForm(props){
+    const [formAward, setFormAward] = useState();
+    const [formAwardDetail, setFormAwardDetail] = useState();
+
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'award'
+        var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
     return(
         <>
-            <Form>
-                <Form.Control type="text" placeholder="수상내역" /><br />
-                <Form.Control type="text" placeholder="상세내역" /><br />
+            <Form onSubmit={handleSubmit}>
+                <Form.Control type="text" onChange={function (e){setFormAward(e.target.value)}} placeholder="수상내역 입력" /><br />
+                <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
@@ -196,7 +210,7 @@ function Home(props){
         inputForm = (<EducationForm userId={userId} />);
 
     } else if (toggle === "award"){
-        inputForm = (<AwardForm />);
+        inputForm = (<AwardForm userId={userId} />);
 
     } else if (toggle === "project"){
         inputForm = (<ProjectForm />);
@@ -284,7 +298,7 @@ function Home(props){
                             AA BB CC DD EE FF<br />
                         </Card.Text>
                         {
-                            toggle=="award" ? <AwardForm /> : ""
+                            toggle=="award" ? inputForm : ""
                         }
                         </Card.Body>
                         <Button variant="light" onClick={(e)=>{setToggle("award");}}>추가하기</Button>
