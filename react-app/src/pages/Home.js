@@ -108,6 +108,7 @@ function EducationForm(props){
 }
 
 function AwardForm(props){
+
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
 
@@ -139,11 +140,13 @@ function AwardForm(props){
 }
 
 function ProjectForm(){
+
     const [project, setProject] = useState();
     const [projectDetail, setProjectDetail] = useState();
 
     const [startDate, setStartDate] = useState(new Date("2014/02/08"));
     const [endDate, setEndDate] = useState(new Date("2014/02/10"));
+
     return(
         <>
             <Form>
@@ -201,6 +204,9 @@ function Home(props){
     const [school, setSchool] = useState();
     const [major, setMajor] = useState();
     const [degree, setDegree] = useState();
+
+    const [award, setAward] = useState();
+    const [awardDetail, setAwardDetail] = useState();
 
     const [toggle, setToggle] = useState();
 
