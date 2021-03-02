@@ -135,6 +135,115 @@ def protected():
     # 홈 화면에서 사용자 정보 표시를 위해 user_id, user_name, user_email 반환
     return jsonify(user_id=user_auth[0], user_email=user_auth[1], user_name=user_auth[2])
 
+# 사용자 포트폴리오 API
+
+## CREATE API
+@app.route('/user/portfolio/create', methods=['GET', 'POST'])
+def create():
+    
+    if request.method == 'POST':
+        
+        # user 포트폴리오 정보 받아오기
+        data = request.get_json()
+        form_header = data.get('form_header')
+
+        error = None
+
+        # form_header(폼 종류)에 따라 분기
+        if form_header == "education":
+
+            user_id = data.get('user_id')
+            school = data.get('school')
+            major = data.get('major')
+            degree = data.get('degree')
+
+            # 유효성 검증 - null 일 경우
+            if not school:
+                error = '학교명이 유효하지 않습니다.'
+
+            if not major:
+                error = '전공명이 유효하지 않습니다.'
+
+            if not degree:
+                error = '학위가 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 학력 등록
+            if error is None:
+                sql = "INSERT INTO `education` (`school`, `major`,`degree`,'user_user_id') VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (school, major, degree, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"school": school, "major": major, "degree": degree, "user_id": user_id})
+
+        elif form_header == "award":
+
+            user_id = data.get('user_id')
+            award = data.get('award')
+            award_detail = data.get('award_detail')
+
+            # 유효성 검증 - null 일 경우
+            if not award:
+                error = '수상내역이 유효하지 않습니다.'
+
+            if not award_detail:
+                error = '상세내역이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 수상이력 등록
+            if error is None:
+                sql = "INSERT INTO `competition` (`competition_title`, `competition_detail`,`user_user_id`) VALUES (%s, %s, %s)"
+                cursor.execute(sql, (award, award_detail, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"award": award, "award_detail": award_detail, "user_id": user_id})
+
+        elif form_header == "project":
+
+            user_id = data.get('user_id')
+            project = data.get('project')
+            project_detail = data.get('project_detail')
+            project_start = data.get('project_start')
+            project_end = data.get('project_end')
+
+            # 유효성 검증 - null 일 경우
+            if not project:
+                error = '프로젝트명이 유효하지 않습니다.'
+
+            if not project_detail:
+                error = '상세내역이 유효하지 않습니다.'
+
+            if not project_start:
+                error = '시작일이 유효하지 않습니다.'
+
+            if not project_end:
+                error = '마감일이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 프로젝트 이력 등록
+            if error is None:
+                sql = "INSERT INTO `project` (`project_title`, `project_detail`,`project_start`,`project_end`,`user_user_id`) VALUES (%s, %s, %s, %s, %s)"
+                cursor.execute(sql, (project, project_detail, project_start, project_end, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"project": project, "project_detail": project_detail, "project_start": project_start, "project_end": project_end, "user_id": user_id})
+            
+        elif form_header == "certi":
+            user_id = data.get('user_id')
+            certi = data.get('certi')
+            certi_detail = data.get('certi_detail')
+            certi_date = data.get('certi_date')
+
+            # 유효성 검증 - null 일 경우
+            if not certi:
+                error = '자격증명이 유효하지 않습니다.'
+
+            if not certi_detail:
+                error = '주최기관이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 자격증 등록
+            if error is None:
+                sql = "INSERT INTO `certificate` (`certificate_title`, `certificate_detail`,`certi_date`,`user_user_id`) VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (certi, certi_detail, certi_date, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"certi": certi, "certi_detail": certi_detail, "certi_date": certi_date, "user_id": user_id})
+
+    # 유효성 검증 미통과 시 에러 메세지 반환
+    return jsonify(status = "fail", result = {"error": error})
 
 if __name__ == '__main__':
     app.run()
