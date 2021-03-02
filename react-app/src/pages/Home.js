@@ -10,15 +10,36 @@ import rachel from './rachel.gif';
 
 function EducationForm(props){
     
+    const [formSchool, setFormSchool] = useState();
+    const [formMajor, setFormMajor] = useState();
+    const [formDegree, setFormDegree] = useState();
+
+    function handleChangeRadio (e) {
+        setFormDegree(e.target.value);
+      };      
+
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'education'
+        var data = {form_header: formHeader, school: formSchool, major: formMajor, degree: formDegree, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
     return(
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formHorizontalSchool">
                     <Form.Label column sm={2}>
                     학교명
                     </Form.Label>
                     <Col sm={10}>
-                    <Form.Control type="school" placeholder="학교명 입력" />
+                    <Form.Control type="school" onChange={function (e){setFormSchool(e.target.value)}} placeholder="학교명 입력" />
                     </Col>
                 </Form.Group>
 
@@ -27,7 +48,7 @@ function EducationForm(props){
                     전공명
                     </Form.Label>
                     <Col sm={10}>
-                    <Form.Control type="major" placeholder="전공명 입력" />
+                    <Form.Control type="major" onChange={function (e){setFormMajor(e.target.value)}} placeholder="전공명 입력" />
                     </Col>
                 </Form.Group>
                 <fieldset>
@@ -39,26 +60,38 @@ function EducationForm(props){
                         <Form.Check
                             type="radio"
                             label="재학"
-                            name="formHorizontalInSchool"
-                            id="inSchool"
+                            name="student"
+                            id="student"
+                            value="student"
+                            checked={formDegree === "student" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="학사"
-                            name="formHorizontalBachelor"
+                            name="bachelor"
                             id="bachelor"
+                            value="bachelor"
+                            checked={formDegree === "bachelor" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="석사"
-                            name="formHorizontalMaster"
+                            name="master"
                             id="master"
+                            value="master"
+                            checked={formDegree === "master" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="박사"
-                            name="formHorizontalDoctor"
+                            name="doctor"
                             id="doctor"
+                            value="doctor"
+                            checked={formDegree === "doctor" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                     </Col>
                     </Form.Group>
@@ -75,7 +108,8 @@ function EducationForm(props){
 }
 
 function AwardForm(){
-
+    const [award, setAward] = useState();
+    const [awardDetail, setAwardDetail] = useState();
     return(
         <>
             <Form>
@@ -91,7 +125,11 @@ function AwardForm(){
 }
 
 function ProjectForm(){
+    const [project, setProject] = useState();
+    const [projectDetail, setProjectDetail] = useState();
 
+    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
+    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
     return(
         <>
             <Form>
@@ -122,7 +160,9 @@ function ProjectForm(){
 }
 
 function CertiForm(){
-
+    const [cert, setCert] = useState();
+    const [certInst, setCertInst] = useState();
+    const [certDate, setCertDate] = useState(new Date());
     return(
         <>
             <Form>
@@ -148,25 +188,12 @@ function Home(props){
     const [major, setMajor] = useState();
     const [degree, setDegree] = useState();
 
-    const [award, setAward] = useState();
-    const [awardDetail, setAwardDetail] = useState();
-
-    const [project, setProject] = useState();
-    const [projectDetail, setProjectDetail] = useState();
-
-    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
-    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
-
-    const [cert, setCert] = useState();
-    const [certInst, setCertInst] = useState();
-    const [certDate, setCertDate] = useState(new Date());
-
     const [toggle, setToggle] = useState();
 
     var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm school={setSchool} major={setMajor} degree={setDegree} />);
+        inputForm = (<EducationForm userId={userId} />);
 
     } else if (toggle === "award"){
         inputForm = (<AwardForm />);
@@ -244,7 +271,7 @@ function Home(props){
                             YYY 학부 XXXX 학과<br />
                         </Card.Text>
                         {
-                            toggle=="education" ? <EducationForm /> : ""
+                            toggle=="education" ? inputForm : ""
                         }
                         </Card.Body>
                         <Button variant="light" onClick={(e)=>{setToggle("education");}}>추가하기</Button>
