@@ -13,35 +13,62 @@ function EducationForm(props){
     return(
         <>
             <Form>
-                <Form.Control type="text" placeholder="학교 이름"/><br />
-                <Form.Control type="text" placeholder="전공"/><br />
-                {['radio'].map((type) => (
-                    <div key={`default-${type}`} className="mb-3">
-                    <Form.Check 
-                        type={type}
-                        id={`student`}
-                        inline label={`재학중`}
-                    />
-                    <Form.Check 
-                        type={type}
-                        id={`master`}
-                        inline label={`학사졸업`}
-                    />
-                    <Form.Check 
-                        type={type}
-                        id={`phd`}
-                        inline label={`석사졸업`}
-                    />
-                    <Form.Check 
-                        type={type}
-                        inline label={`박사졸업`}
-                    />
-                    </div>
-                ))}
-                <center>
-                    <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" type="submit">취소</Button>
-                </center>
+                <Form.Group as={Row} controlId="formHorizontalSchool">
+                    <Form.Label column sm={2}>
+                    학교명
+                    </Form.Label>
+                    <Col sm={10}>
+                    <Form.Control type="school" placeholder="학교명 입력" />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="formHorizontalMajor">
+                    <Form.Label column sm={2}>
+                    전공명
+                    </Form.Label>
+                    <Col sm={10}>
+                    <Form.Control type="major" placeholder="전공명 입력" />
+                    </Col>
+                </Form.Group>
+                <fieldset>
+                    <Form.Group as={Row}>
+                    <Form.Label as="legend" column sm={2}>
+                        학위
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Check
+                            type="radio"
+                            label="재학"
+                            name="formHorizontalInSchool"
+                            id="inSchool"
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="학사"
+                            name="formHorizontalBachelor"
+                            id="bachelor"
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="석사"
+                            name="formHorizontalMaster"
+                            id="master"
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="박사"
+                            name="formHorizontalDoctor"
+                            id="doctor"
+                        />
+                    </Col>
+                    </Form.Group>
+                </fieldset>
+
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 10, offset: 2 }}>
+                    <Button type="submit">확인</Button>
+                    </Col>
+                </Form.Group>
             </Form>
         </>
     )
