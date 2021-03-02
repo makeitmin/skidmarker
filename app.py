@@ -169,7 +169,7 @@ def create():
             
             # 유효성 검증 통과 시 DB에 학력 등록
             if error is None:
-                sql = "INSERT INTO `education` (`school`, `major`,`degree`,'user_user_id') VALUES (%s, %s, %s, %s)"
+                sql = "INSERT INTO `education` (`school_name`, `major`,`degree`,`user_user_id`) VALUES (%s, %s, %s, %s)"
                 cursor.execute(sql, (school, major, degree, user_id,))
                 db.commit()
                 return jsonify(status = "success", result = {"school": school, "major": major, "degree": degree, "user_id": user_id})
