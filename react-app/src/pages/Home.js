@@ -197,7 +197,7 @@ function CertiForm(){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
-    const [formCertDate, setFormCertDate] = useState(new Date());
+    const [formCertDate, setFormCertDate] = useState(new Date("2014/02/10"));
     
     return(
         <>
