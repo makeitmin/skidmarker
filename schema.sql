@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `skidmarker`.`project` (
 CREATE TABLE IF NOT EXISTS `skidmarker`.`certificate` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `detail` VARCHAR(255) NOT NULL,
+  `organization` VARCHAR(255) NOT NULL,
   `acq_date` DATE NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
