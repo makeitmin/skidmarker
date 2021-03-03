@@ -248,5 +248,26 @@ def create():
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
 
+## READ API
+@app.route('/user/portfolio/read', methods=['GET'])
+def read():
+
+    sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education`"
+    cursor.execute(sql_education)
+    education = cursor.fetchall()
+
+    sql_award = "SELECT `name`, `detail` FROM `award`"
+    cursor.execute(sql_award)
+    award = cursor.fetchall()
+
+    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project`"
+    cursor.execute(sql_project)
+    project = cursor.fetchall()
+
+    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate`"
+    cursor.execute(sql_certificate)
+    certificate = cursor.fetchall()
+    return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
+
 if __name__ == '__main__':
     app.run()
