@@ -10,15 +10,36 @@ import rachel from './rachel.gif';
 
 function EducationForm(props){
     
+    const [formSchool, setFormSchool] = useState();
+    const [formMajor, setFormMajor] = useState();
+    const [formDegree, setFormDegree] = useState();
+
+    function handleChangeRadio (e) {
+        setFormDegree(e.target.value);
+      };      
+
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'education'
+        var data = {form_header: formHeader, school: formSchool, major: formMajor, degree: formDegree, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
     return(
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formHorizontalSchool">
                     <Form.Label column sm={2}>
                     학교명
                     </Form.Label>
                     <Col sm={10}>
-                    <Form.Control type="school" placeholder="학교명 입력" />
+                    <Form.Control type="school" onChange={function (e){setFormSchool(e.target.value)}} placeholder="학교명 입력" />
                     </Col>
                 </Form.Group>
 
@@ -27,9 +48,10 @@ function EducationForm(props){
                     전공명
                     </Form.Label>
                     <Col sm={10}>
-                    <Form.Control type="major" placeholder="전공명 입력" />
+                    <Form.Control type="major" onChange={function (e){setFormMajor(e.target.value)}} placeholder="전공명 입력" />
                     </Col>
                 </Form.Group>
+                
                 <fieldset>
                     <Form.Group as={Row}>
                     <Form.Label as="legend" column sm={2}>
@@ -39,26 +61,38 @@ function EducationForm(props){
                         <Form.Check
                             type="radio"
                             label="재학"
-                            name="formHorizontalInSchool"
-                            id="inSchool"
+                            name="student"
+                            id="student"
+                            value="student"
+                            checked={formDegree === "student" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="학사"
-                            name="formHorizontalBachelor"
+                            name="bachelor"
                             id="bachelor"
+                            value="bachelor"
+                            checked={formDegree === "bachelor" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="석사"
-                            name="formHorizontalMaster"
+                            name="master"
                             id="master"
+                            value="master"
+                            checked={formDegree === "master" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                         <Form.Check
                             type="radio"
                             label="박사"
-                            name="formHorizontalDoctor"
+                            name="doctor"
                             id="doctor"
+                            value="doctor"
+                            checked={formDegree === "doctor" ? true : false}
+                            onChange={handleChangeRadio}
                         />
                     </Col>
                     </Form.Group>
@@ -74,13 +108,29 @@ function EducationForm(props){
     )
 }
 
-function AwardForm(){
+function AwardForm(props){
+
+    const [formAward, setFormAward] = useState();
+    const [formAwardDetail, setFormAwardDetail] = useState();
+
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'award'
+        var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
 
     return(
         <>
-            <Form>
-                <Form.Control type="text" placeholder="수상내역" /><br />
-                <Form.Control type="text" placeholder="상세내역" /><br />
+            <Form onSubmit={handleSubmit}>
+                <Form.Control type="text" onChange={function (e){setFormAward(e.target.value)}} placeholder="수상내역 입력" /><br />
+                <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
@@ -90,27 +140,46 @@ function AwardForm(){
     )
 }
 
-function ProjectForm(){
+function ProjectForm(props){
+
+    const [formProject, setFormProject] = useState();
+    const [formProjectDetail, setFormProjectDetail] = useState();
+
+    const [formStartDate, setFormStartDate] = useState(new Date("2014/02/08"));
+    const [formEndDate, setFormEndDate] = useState(new Date("2014/02/10"));
+
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'project'
+        var data = {form_header: formHeader, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
 
     return(
         <>
-            <Form>
-                <Form.Control type="text" placeholder="프로젝트 제목" /><br />
+            <Form onSubmit={handleSubmit}>
+                <Form.Control type="text" placeholder="프로젝트명" /><br />
                 <Form.Control type="text" placeholder="상세내역" /><br />
                 <DatePicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
+                    selected={formStartDate}
+                    onChange={date => setFormStartDate(date)}
                     selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
+                    startDate={formStartDate}
+                    endDate={formEndDate}
                 />
                 <DatePicker
-                    selected={endDate}
-                    onChange={date => setEndDate(date)}
+                    selected={formEndDate}
+                    onChange={date => setFormEndDate(date)}
                     selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={startDate}
+                    startDate={formStartDate}
+                    endDate={formEndDate}
+                    minDate={formStartDate}
                 /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
@@ -123,12 +192,16 @@ function ProjectForm(){
 
 function CertiForm(){
 
+    const [formCert, setFormCert] = useState();
+    const [formCertOrg, setFormCertOrg] = useState();
+    const [formCertDate, setFormCertDate] = useState(new Date());
+    
     return(
         <>
             <Form>
                 <Form.Control type="text" placeholder="수상내역" /><br />
                 <Form.Control type="text" placeholder="주최기관" /><br />
-                <DatePicker selected={certDate} onChange={date => setCertDate(date)} /><br />
+                <DatePicker selected={formCertDate} onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
@@ -151,31 +224,21 @@ function Home(props){
     const [award, setAward] = useState();
     const [awardDetail, setAwardDetail] = useState();
 
-    const [project, setProject] = useState();
-    const [projectDetail, setProjectDetail] = useState();
-
-    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
-    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
-
-    const [cert, setCert] = useState();
-    const [certInst, setCertInst] = useState();
-    const [certDate, setCertDate] = useState(new Date());
-
     const [toggle, setToggle] = useState();
 
     var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm school={setSchool} major={setMajor} degree={setDegree} />);
-
+        inputForm = (<EducationForm userId={userId} />);
+    
     } else if (toggle === "award"){
-        inputForm = (<AwardForm />);
+        inputForm = (<AwardForm userId={userId} />);
 
     } else if (toggle === "project"){
-        inputForm = (<ProjectForm />);
+        inputForm = (<ProjectForm userId={userId} />);
 
     } else if (toggle === "certi") {
-        inputForm = (<CertiForm />);
+        inputForm = (<CertiForm userId={userId} />);
 
     }
 
@@ -244,10 +307,10 @@ function Home(props){
                             YYY 학부 XXXX 학과<br />
                         </Card.Text>
                         {
-                            toggle=="education" ? <EducationForm /> : ""
+                            toggle === "education" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("education");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("education"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -257,10 +320,10 @@ function Home(props){
                             AA BB CC DD EE FF<br />
                         </Card.Text>
                         {
-                            toggle=="award" ? <AwardForm /> : ""
+                            toggle === "award" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("award");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("award"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -271,10 +334,10 @@ function Home(props){
                             2021-02-27 ~ 2021-03-04<br />
                         </Card.Text>
                         {
-                            toggle=="project" ? <ProjectForm /> : ""
+                            toggle === "project" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("project");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("project"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -285,10 +348,10 @@ function Home(props){
                             2021-02-27<br />
                         </Card.Text>
                         {
-                            toggle=="certi" ? <CertiForm /> : ""
+                            toggle === "certi" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("certi");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("certi"); }}>추가하기</Button>
                     </Card>
                 </Col>
             </Row>
