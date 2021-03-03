@@ -51,6 +51,7 @@ function EducationForm(props){
                     <Form.Control type="major" onChange={function (e){setFormMajor(e.target.value)}} placeholder="전공명 입력" />
                     </Col>
                 </Form.Group>
+                
                 <fieldset>
                     <Form.Group as={Row}>
                     <Form.Label as="legend" column sm={2}>
@@ -141,31 +142,31 @@ function AwardForm(props){
 
 function ProjectForm(){
 
-    const [project, setProject] = useState();
-    const [projectDetail, setProjectDetail] = useState();
+    const [formProject, setFormProject] = useState();
+    const [formProjectDetail, setFormProjectDetail] = useState();
 
-    const [startDate, setStartDate] = useState(new Date("2014/02/08"));
-    const [endDate, setEndDate] = useState(new Date("2014/02/10"));
+    const [formStartDate, setFormStartDate] = useState(new Date("2014/02/08"));
+    const [formEndDate, setFormEndDate] = useState(new Date("2014/02/10"));
 
     return(
         <>
             <Form>
-                <Form.Control type="text" placeholder="프로젝트 제목" /><br />
+                <Form.Control type="text" placeholder="프로젝트명" /><br />
                 <Form.Control type="text" placeholder="상세내역" /><br />
                 <DatePicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
+                    selected={formStartDate}
+                    onChange={date => setFormStartDate(date)}
                     selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
+                    startDate={formStartDate}
+                    endDate={formEndDate}
                 />
                 <DatePicker
-                    selected={endDate}
+                    selected={formEndDate}
                     onChange={date => setEndDate(date)}
                     selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={startDate}
+                    startDate={formStartDate}
+                    endDate={formEndDate}
+                    minDate={formStartDate}
                 /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
@@ -214,12 +215,12 @@ function Home(props){
     
     if (toggle === "education"){
         inputForm = (<EducationForm userId={userId} />);
-
+    
     } else if (toggle === "award"){
         inputForm = (<AwardForm userId={userId} />);
 
     } else if (toggle === "project"){
-        inputForm = (<ProjectForm />);
+        inputForm = (<ProjectForm userId={userId} />);
 
     } else if (toggle === "certi") {
         inputForm = (<CertiForm />);
@@ -291,10 +292,10 @@ function Home(props){
                             YYY 학부 XXXX 학과<br />
                         </Card.Text>
                         {
-                            toggle=="education" ? inputForm : ""
+                            toggle === "education" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("education");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("education"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -304,10 +305,10 @@ function Home(props){
                             AA BB CC DD EE FF<br />
                         </Card.Text>
                         {
-                            toggle=="award" ? inputForm : ""
+                            toggle === "award" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("award");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("award"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -318,10 +319,10 @@ function Home(props){
                             2021-02-27 ~ 2021-03-04<br />
                         </Card.Text>
                         {
-                            toggle=="project" ? <ProjectForm /> : ""
+                            toggle === "project" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("project");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("project"); }}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
@@ -332,10 +333,10 @@ function Home(props){
                             2021-02-27<br />
                         </Card.Text>
                         {
-                            toggle=="certi" ? <CertiForm /> : ""
+                            toggle === "certi" ? <CertiForm /> : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={(e)=>{setToggle("certi");}}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("certi"); }}>추가하기</Button>
                     </Card>
                 </Col>
             </Row>
