@@ -54,31 +54,31 @@ def register():
 
         error = None
 
-        user_email = data.get('user_email')
-        user_password = data.get('user_password')
-        user_name = data.get('user_name')
+        email = data.get('user_email')
+        password = data.get('user_password')
+        name = data.get('user_name')
 
         # 유효성 검증 - null 일 경우
-        if not user_email:
+        if not email:
             error = 'Email이 유효하지 않습니다.'
         
-        elif not user_password:
+        elif not password:
             error = 'Password가 유효하지 않습니다.'
 
         # 유효성 검증 - 기존 회원일 경우
-        sql = 'SELECT `user_id` FROM `user` WHERE `user_email`=%s'
-        cursor.execute(sql, (user_email,))
+        sql = 'SELECT `id` FROM `user` WHERE `email`=%s'
+        cursor.execute(sql, (email,))
         result = cursor.fetchone()
 
         if result is not None:
-            error = '{} 계정은 이미 등록된 계정입니다.'.format(user_email)
+            error = '{} 계정은 이미 등록된 계정입니다.'.format(email)
 
         # 유효성 검증 통과 시 DB에 회원정보 등록
         if error is None:
-            sql = "INSERT INTO `user` (`user_email`, `user_password`,`user_name`) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (user_email, generate_password_hash(user_password), user_name,)) # user_password 암호화
+            sql = "INSERT INTO `user` (`email`, `password`,`name`) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (email, generate_password_hash(password), name,)) # user_password 암호화
             db.commit()
-            return jsonify(status = "success", result = {"user_email": user_email, "user_password": user_password, "user_name": user_name})
+            return jsonify(status = "success", result = {"user_email": email, "user_password": password, "user_name": name})
 
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
@@ -97,11 +97,11 @@ def login():
         
         error = None
         
-        user_email = data.get('user_email')
-        user_password = data.get('user_password')
+        email = data.get('user_email')
+        password = data.get('user_password')
 
-        sql = 'SELECT `user_email`, `user_password`, `user_name` FROM `user` WHERE `user_email` = %s'
-        cursor.execute(sql, (user_email,))
+        sql = 'SELECT `email`, `password`, `name` FROM `user` WHERE `email` = %s'
+        cursor.execute(sql, (email,))
         user = cursor.fetchone()
         
         # 유효성 검증 - null 일 경우
@@ -110,12 +110,12 @@ def login():
         
         # 유효성 검증 - 비밀번호가 틀렸을 경우
         # user는 tuple 타입으로 데이터 반환, user[0]은 email user[1]은 password 
-        if not (user == None or check_password_hash(user[1], user_password)):
+        if not (user == None or check_password_hash(user[1], password)):
             error = 'password가 틀렸습니다.'
         
         if error is None:
             access_token = create_access_token(identity = user[0])
-            return jsonify(result = "success", access_token = access_token, user_email = user_email)
+            return jsonify(result = "success", access_token = access_token, user_email = email)
         
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
@@ -128,13 +128,122 @@ def protected():
 
     current_user = get_jwt_identity()
 
-    sql = 'SELECT `user_id`, `user_email`, `user_name` FROM `user` WHERE `user_email` = %s'
+    sql = 'SELECT `id`, `email`, `name` FROM `user` WHERE `email` = %s'
     cursor.execute(sql, (current_user,))
     user_auth = cursor.fetchone()
     
     # 홈 화면에서 사용자 정보 표시를 위해 user_id, user_name, user_email 반환
     return jsonify(user_id=user_auth[0], user_email=user_auth[1], user_name=user_auth[2])
 
+# 사용자 포트폴리오 API
+
+## CREATE API
+@app.route('/user/portfolio/create', methods=['GET', 'POST'])
+def create():
+    
+    if request.method == 'POST':
+        
+        # user 포트폴리오 정보 받아오기
+        data = request.get_json()
+        form_header = data.get('form_header')
+
+        error = None
+
+        # form_header(폼 종류)에 따라 분기
+        if form_header == "education":
+
+            user_id = data.get('user_id')
+            univ_name = data.get('school')
+            major = data.get('major')
+            degree = data.get('degree')
+
+            # 유효성 검증 - null 일 경우
+            if not univ_name:
+                error = '학교명이 유효하지 않습니다.'
+
+            if not major:
+                error = '전공명이 유효하지 않습니다.'
+
+            if not degree:
+                error = '학위가 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 학력 등록
+            if error is None:
+                sql = "INSERT INTO `education` (`univ_name`, `major`,`degree`,`user_id`) VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (univ_name, major, degree, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"school": univ_name, "major": major, "degree": degree, "user_id": user_id})
+
+        elif form_header == "award":
+
+            user_id = data.get('user_id')
+            name = data.get('award')
+            detail = data.get('award_detail')
+
+            # 유효성 검증 - null 일 경우
+            if not name:
+                error = '수상내역이 유효하지 않습니다.'
+
+            if not detail:
+                error = '상세내역이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 수상이력 등록
+            if error is None:
+                sql = "INSERT INTO `award` (`name`, `detail`,`user_id`) VALUES (%s, %s, %s)"
+                cursor.execute(sql, (name, detail, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"award": name, "award_detail": detail, "user_id": user_id})
+
+        elif form_header == "project":
+
+            user_id = data.get('user_id')
+            name = data.get('project')
+            detail = data.get('project_detail')
+            start_date = data.get('project_start')
+            end_date = data.get('project_end')
+
+            # 유효성 검증 - null 일 경우
+            if not name:
+                error = '프로젝트명이 유효하지 않습니다.'
+
+            if not detail:
+                error = '상세내역이 유효하지 않습니다.'
+
+            if not start_date:
+                error = '시작일이 유효하지 않습니다.'
+
+            if not end_date:
+                error = '마감일이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 프로젝트 이력 등록
+            if error is None:
+                sql = "INSERT INTO `project` (`name`, `detail`,`start_date`,`end_date`,`user_id`) VALUES (%s, %s, %s, %s, %s)"
+                cursor.execute(sql, (name, detail, start_date, end_date, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"project": name, "project_detail": detail, "project_start": start_date, "project_end": end_date, "user_id": user_id})
+            
+        elif form_header == "certi":
+            user_id = data.get('user_id')
+            name = data.get('certi')
+            organization = data.get('certi_detail')
+            acq_date = data.get('certi_date')
+
+            # 유효성 검증 - null 일 경우
+            if not name:
+                error = '자격증명이 유효하지 않습니다.'
+
+            if not organization:
+                error = '공급기관이 유효하지 않습니다.'
+            
+            # 유효성 검증 통과 시 DB에 자격증 등록
+            if error is None:
+                sql = "INSERT INTO `certificate` (`name`, `organization`,`acq_date`,`user_id`) VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (name, organization, acq_date, user_id,))
+                db.commit()
+                return jsonify(status = "success", result = {"certi": name, "certi_detail": organization, "certi_date": acq_date, "user_id": user_id})
+
+    # 유효성 검증 미통과 시 에러 메세지 반환
+    return jsonify(status = "fail", result = {"error": error})
 
 if __name__ == '__main__':
     app.run()
