@@ -196,11 +196,15 @@ def create():
 
         elif form_header == "project":
 
+            print(data)
+
             user_id = data.get('user_id')
             name = data.get('project')
             detail = data.get('project_detail')
             start_date = data.get('project_start')
+            start_date = start_date.split("T")[0]
             end_date = data.get('project_end')
+            end_date = end_date.split("T")[0]
 
             # 유효성 검증 - null 일 경우
             if not name:

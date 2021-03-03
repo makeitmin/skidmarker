@@ -164,12 +164,14 @@ function ProjectForm(props){
     return(
         <>
             <Form onSubmit={handleSubmit}>
-                <Form.Control type="text" placeholder="프로젝트명" /><br />
-                <Form.Control type="text" placeholder="상세내역" /><br />
+                <Form.Control type="text" onChange={function (e){setFormProject(e.target.value)}} placeholder="프로젝트명" /><br />
+                <Form.Control type="text" onChange={function (e){setFormProjectDetail(e.target.value)}} placeholder="상세내역" /><br />
+                {formProjectDetail}
                 <DatePicker
                     selected={formStartDate}
                     onChange={date => setFormStartDate(date)}
                     selectsStart
+                    dateFormat="yyyy-MM-dd"
                     startDate={formStartDate}
                     endDate={formEndDate}
                 />
@@ -177,6 +179,7 @@ function ProjectForm(props){
                     selected={formEndDate}
                     onChange={date => setFormEndDate(date)}
                     selectsEnd
+                    dateFormat="yyyy-MM-dd"
                     startDate={formStartDate}
                     endDate={formEndDate}
                     minDate={formStartDate}
