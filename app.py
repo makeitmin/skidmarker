@@ -196,8 +196,6 @@ def create():
 
         elif form_header == "project":
 
-            print(data)
-
             user_id = data.get('user_id')
             name = data.get('project')
             detail = data.get('project_detail')
@@ -231,6 +229,7 @@ def create():
             name = data.get('certi')
             organization = data.get('certi_detail')
             acq_date = data.get('certi_date')
+            acq_date = acq_date.split("T")[0]
 
             # 유효성 검증 - null 일 경우
             if not name:

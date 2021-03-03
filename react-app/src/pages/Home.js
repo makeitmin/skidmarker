@@ -193,18 +193,31 @@ function ProjectForm(props){
     )
 }
 
-function CertiForm(){
+function CertiForm(props){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
     const [formCertDate, setFormCertDate] = useState(new Date("2014/02/10"));
     
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'certi'
+        var data = {form_header: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
     return(
         <>
-            <Form>
-                <Form.Control type="text" placeholder="수상내역" /><br />
-                <Form.Control type="text" placeholder="주최기관" /><br />
-                <DatePicker selected={formCertDate} onChange={date => setFormCertDate(date)} /><br />
+            <Form onSubmit={handleSubmit}>
+                <Form.Control type="text" onChange={function (e){setFormCert(e.target.value)}} placeholder="자격증명" /><br />
+                <Form.Control type="text" onChange={function (e){setFormCertOrg(e.target.value)}} placeholder="공급기관" /><br />
+                <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
