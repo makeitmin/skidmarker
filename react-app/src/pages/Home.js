@@ -175,7 +175,7 @@ function ProjectForm(props){
                 />
                 <DatePicker
                     selected={formEndDate}
-                    onChange={date => setEndDate(date)}
+                    onChange={date => setFormEndDate(date)}
                     selectsEnd
                     startDate={formStartDate}
                     endDate={formEndDate}
@@ -201,7 +201,7 @@ function CertiForm(){
             <Form>
                 <Form.Control type="text" placeholder="수상내역" /><br />
                 <Form.Control type="text" placeholder="주최기관" /><br />
-                <DatePicker selected={formCertDate} onChange={date => setCertDate(date)} /><br />
+                <DatePicker selected={formCertDate} onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
