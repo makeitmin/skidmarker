@@ -191,15 +191,17 @@ function ProjectForm(props){
 }
 
 function CertiForm(){
-    const [cert, setCert] = useState();
-    const [certInst, setCertInst] = useState();
-    const [certDate, setCertDate] = useState(new Date());
+
+    const [formCert, setFormCert] = useState();
+    const [formCertOrg, setFormCertOrg] = useState();
+    const [formCertDate, setFormCertDate] = useState(new Date());
+    
     return(
         <>
             <Form>
                 <Form.Control type="text" placeholder="수상내역" /><br />
                 <Form.Control type="text" placeholder="주최기관" /><br />
-                <DatePicker selected={certDate} onChange={date => setCertDate(date)} /><br />
+                <DatePicker selected={formCertDate} onChange={date => setCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" type="submit">취소</Button>
@@ -236,7 +238,7 @@ function Home(props){
         inputForm = (<ProjectForm userId={userId} />);
 
     } else if (toggle === "certi") {
-        inputForm = (<CertiForm />);
+        inputForm = (<CertiForm userId={userId} />);
 
     }
 
@@ -346,7 +348,7 @@ function Home(props){
                             2021-02-27<br />
                         </Card.Text>
                         {
-                            toggle === "certi" ? <CertiForm /> : ""
+                            toggle === "certi" ? inputForm : ""
                         }
                         </Card.Body>
                         <Button variant="light" onClick={function (e){ setToggle("certi"); }}>추가하기</Button>
