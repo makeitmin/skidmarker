@@ -100,7 +100,9 @@ function EducationForm(props){
 
                 <Form.Group as={Row}>
                     <Col sm={{ span: 10, offset: 2 }}>
-                    <Button type="submit">확인</Button>
+                    <Button variant="primary" type="submit">확인</Button>
+                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
+                    
                     </Col>
                 </Form.Group>
             </Form>
@@ -133,7 +135,7 @@ function AwardForm(props){
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" type="submit">취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -186,7 +188,7 @@ function ProjectForm(props){
                 /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" type="submit">취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -220,7 +222,7 @@ function CertiForm(props){
                 <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" type="submit">취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -245,16 +247,16 @@ function Home(props){
     var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm userId={userId} />);
+        inputForm = (<EducationForm userId={userId} setFunc={setToggle} />);
     
     } else if (toggle === "award"){
-        inputForm = (<AwardForm userId={userId} />);
+        inputForm = (<AwardForm userId={userId} setFunc={setToggle} />);
 
     } else if (toggle === "project"){
-        inputForm = (<ProjectForm userId={userId} />);
+        inputForm = (<ProjectForm userId={userId} setFunc={setToggle} />);
 
     } else if (toggle === "certi") {
-        inputForm = (<CertiForm userId={userId} />);
+        inputForm = (<CertiForm userId={userId} setFunc={setToggle} />);
 
     }
 
