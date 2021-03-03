@@ -25,6 +25,7 @@ function EducationForm(props){
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 console.log(response.data);
+                props.setFunc("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -122,6 +123,7 @@ function AwardForm(props){
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 console.log(response.data);
+                props.setFunc("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -157,6 +159,7 @@ function ProjectForm(props){
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 console.log(response.data);
+                props.setFunc("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -208,6 +211,7 @@ function CertiForm(props){
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 console.log(response.data);
+                props.setFunc("");
             })
             .catch((err) => {
                 console.log("전송 에러");
