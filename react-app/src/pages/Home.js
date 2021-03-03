@@ -244,7 +244,7 @@ function Home(props){
 
     useEffect(() => { 
         const token = sessionStorage.getItem("token");
-        axios.get("http://localhost:5000/protected", {
+        axios.get("http://localhost:5000/auth/info", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
