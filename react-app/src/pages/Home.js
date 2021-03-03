@@ -140,7 +140,7 @@ function AwardForm(props){
     )
 }
 
-function ProjectForm(){
+function ProjectForm(props){
 
     const [formProject, setFormProject] = useState();
     const [formProjectDetail, setFormProjectDetail] = useState();
@@ -148,9 +148,22 @@ function ProjectForm(){
     const [formStartDate, setFormStartDate] = useState(new Date("2014/02/08"));
     const [formEndDate, setFormEndDate] = useState(new Date("2014/02/10"));
 
+    function handleSubmit(e){
+        e.preventDefault();
+        var formHeader = 'project'
+        var data = {form_header: formHeader, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: props.userId};
+        axios.post("http://localhost:5000/user/portfolio/create", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
     return(
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Control type="text" placeholder="프로젝트명" /><br />
                 <Form.Control type="text" placeholder="상세내역" /><br />
                 <DatePicker
