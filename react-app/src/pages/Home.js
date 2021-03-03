@@ -64,8 +64,8 @@ function EducationForm(props){
                             label="재학"
                             name="student"
                             id="student"
-                            value="student"
-                            checked={formDegree === "student" ? true : false}
+                            value="재학"
+                            checked={formDegree === "재학" ? true : false}
                             onChange={handleChangeRadio}
                         />
                         <Form.Check
@@ -73,8 +73,8 @@ function EducationForm(props){
                             label="학사"
                             name="bachelor"
                             id="bachelor"
-                            value="bachelor"
-                            checked={formDegree === "bachelor" ? true : false}
+                            value="학사"
+                            checked={formDegree === "학사" ? true : false}
                             onChange={handleChangeRadio}
                         />
                         <Form.Check
@@ -82,8 +82,8 @@ function EducationForm(props){
                             label="석사"
                             name="master"
                             id="master"
-                            value="master"
-                            checked={formDegree === "master" ? true : false}
+                            value="석사"
+                            checked={formDegree === "석사" ? true : false}
                             onChange={handleChangeRadio}
                         />
                         <Form.Check
@@ -91,8 +91,8 @@ function EducationForm(props){
                             label="박사"
                             name="doctor"
                             id="doctor"
-                            value="doctor"
-                            checked={formDegree === "doctor" ? true : false}
+                            value="박사"
+                            checked={formDegree === "박사" ? true : false}
                             onChange={handleChangeRadio}
                         />
                     </Col>
