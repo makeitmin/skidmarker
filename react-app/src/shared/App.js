@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { Register, Login, Home } from '../pages';
+import { Register, Login, Home, Network } from '../pages';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,6 +16,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/home" component={Home}/>
                     <Route path="/register" component={Register}/>
+                    <Route path="/network" component={Network}/>
                 </Switch>
             </>
         );
