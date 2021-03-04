@@ -249,11 +249,14 @@ def create():
     return jsonify(status = "fail", result = {"error": error})
 
 ## READ API
-@app.route('/user/portfolio/read', methods=['GET'])
+@app.route('/user/portfolio/read', methods=['GET', 'POST'])
 def read():
 
-    sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education`"
-    cursor.execute(sql_education)
+    data = request.get_json()
+    user_id = int(data.get('userId'))
+    
+    sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
+    cursor.execute(sql_education, (user_id,))
     education = cursor.fetchall()
 
     sql_award = "SELECT `name`, `detail` FROM `award`"

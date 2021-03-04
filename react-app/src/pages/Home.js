@@ -275,6 +275,16 @@ function Home(props){
             setUserId(response.data.user_id);
             setUserEmail(response.data.user_email);
             setUserName(response.data.user_name);
+
+            var data = {userId: userId};
+            axios.post("http://localhost:5000/user/portfolio/read", data)
+            .then(function (response){
+                var res = response.data.education
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
         })
     }, [])
 
