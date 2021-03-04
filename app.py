@@ -4,6 +4,12 @@ from flask_jwt_extended import JWTManager
 from flask_restful import reqparse, abort, Resource
 
 import pymysql
+# from flask_migrate import Migrate
+# from flask_sqlalchemy import SQLAlchemy
+
+# from models import User
+
+# import config
 
 from flask import jsonify
 from flask import request
@@ -13,7 +19,14 @@ from flask_cors import CORS
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
+# db = SQLAlchemy()
+# migrate = Migrate()
+
 app = Flask(__name__)
+# app.config.from_object(config)
+# db.init_app(app)
+# migrate.init_app(app, db)
+
 CORS(app)
 
 app.config.update(DEBUG = True, JWT_SECRET_KEY = "adminSeongmin")
@@ -38,7 +51,6 @@ def index():
 # 홈 API 구현하기
 @app.route('/home')
 def home():
-
     return ''
 
 # 회원가입/로그인 API 구현하기
@@ -273,4 +285,4 @@ def read():
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
 if __name__ == '__main__':
-    app.run()
+    app.run("0.0.0.0", port=5000, threaded = false)
