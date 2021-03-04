@@ -275,14 +275,14 @@ def read():
     cursor.execute(sql_award, (user_id,))
     award = cursor.fetchall()
 
-    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project` WHERE `user_id`= %s"
+    sql_project = "SELECT `name`, `detail`, DATE_FORMAT(`start_date`, '%%Y-%%m-%%d'), DATE_FORMAT(`end_date`, '%%Y-%%m-%%d') FROM `project` WHERE `user_id`= %s"
     cursor.execute(sql_project, (user_id,))
     project = cursor.fetchall()
 
-    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate` WHERE `user_id`= %s"
+    sql_certificate = "SELECT `name`, `organization`, DATE_FORMAT(`acq_date`, '%%Y-%%m-%%d') FROM `certificate` WHERE `user_id`= %s"
     cursor.execute(sql_certificate, (user_id,))
     certificate = cursor.fetchall()
-    
+
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
 if __name__ == '__main__':
