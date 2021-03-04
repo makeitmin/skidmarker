@@ -265,24 +265,25 @@ def create():
 def read():
 
     data = request.get_json()
-    user_id = int(data.get('userId'))
+    user_id = data.get('userId')
     
     sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
     cursor.execute(sql_education, (user_id,))
     education = cursor.fetchall()
 
-    sql_award = "SELECT `name`, `detail` FROM `award`"
-    cursor.execute(sql_award)
+    sql_award = "SELECT `name`, `detail` FROM `award` WHERE `user_id`= %s"
+    cursor.execute(sql_award, (user_id,))
     award = cursor.fetchall()
 
-    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project`"
-    cursor.execute(sql_project)
+    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project` WHERE `user_id`= %s"
+    cursor.execute(sql_project, (user_id,))
     project = cursor.fetchall()
 
-    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate`"
-    cursor.execute(sql_certificate)
+    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate` WHERE `user_id`= %s"
+    cursor.execute(sql_certificate, (user_id,))
     certificate = cursor.fetchall()
+    
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
 if __name__ == '__main__':
-    app.run("0.0.0.0", port=5000, threaded = false)
+    app.run("0.0.0.0", port=5000, threaded = False)
