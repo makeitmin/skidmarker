@@ -239,12 +239,10 @@ function Home(props){
     const [userEmail, setUserEmail] = useState();
     const [userName, setUserName] = useState();
 
-    const [school, setSchool] = useState();
-    const [major, setMajor] = useState();
-    const [degree, setDegree] = useState();
-
+    const [education, setEducation] = useState();
     const [award, setAward] = useState();
-    const [awardDetail, setAwardDetail] = useState();
+    const [project, setProject] = useState();
+    const [certificate, setCertificate] = useState();
 
     const [toggle, setToggle] = useState();
 
@@ -275,18 +273,40 @@ function Home(props){
             setUserId(response.data.user_id);
             setUserEmail(response.data.user_email);
             setUserName(response.data.user_name);
-
-            var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
-            .then(function (response){
-                var res = response.data.education
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log("전송 에러");
-            })
         })
     }, [])
+    
+    useEffect(() => {
+        if(!userId) return
+        var data = {userId: userId};
+                axios.post("http://localhost:5000/user/portfolio/read", data)
+                .then(function (response){
+                    var responseEducation = response.data.education;
+                    var responseAward = response.data.award;
+                    var responseProject = response.data.project;
+                    var responseCertificate = response.data.certificate;
+                    var educationList = []; var awardList = []; var projectList = []; var certificateList = [];
+                    for(var i=0; i<responseEducation.length; i++){
+                        educationList.push(<li>{responseEducation[i][0]}{"  "}{responseEducation[i][1]}{"  "}{responseEducation[i][2]}</li>);
+                    }
+                    for(var i=0; i<responseAward.length; i++){
+                        awardList.push(<li>{responseAward[i][0]}{"  "}{responseAward[i][1]}</li>);
+                    }
+                    for(var i=0; i<responseProject.length; i++){
+                        projectList.push(<li>{responseProject[i][0]}{"  "}{responseProject[i][1]}{"  "}{responseProject[i][2]}{"  "}{responseProject[i][3]}</li>);
+                    }
+                    for(var i=0; i<responseCertificate.length; i++){
+                        certificateList.push(<li>{responseCertificate[i][0]}{"  "}{responseCertificate[i][1]}{"  "}{responseCertificate[i][2]}</li>);
+                    }
+                    setEducation(educationList);
+                    setAward(awardList);
+                    setProject(projectList);
+                    setCertificate(certificateList);
+                })
+                .catch((err) => {
+                    console.log("전송 에러");
+                })
+    }, [userId])
 
     function logout(){
         sessionStorage.removeItem("token");
@@ -335,8 +355,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>학력</Card.Title>
                         <Card.Text>
-                            OO 대학교<br />
-                            YYY 학부 XXXX 학과<br />
+                            {
+                                education
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "education" ? inputForm : ""
@@ -348,8 +369,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>수상이력</Card.Title>
                         <Card.Text>
-                            ABCDEF 대회<br />
-                            AA BB CC DD EE FF<br />
+                            {
+                                award
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "award" ? inputForm : ""
@@ -361,9 +383,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>프로젝트</Card.Title>
                         <Card.Text>
-                            레이서 포트폴리오 프로젝트<br />
-                            포트폴리오 웹서비스 구현 및 배포<br />
-                            2021-02-27 ~ 2021-03-04<br />
+                            {
+                                project
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "project" ? inputForm : ""
@@ -375,9 +397,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>자격증</Card.Title>
                         <Card.Text>
-                            WWW 자격증<br />
-                            RRR GGGG DDDD SSSSS<br />
-                            2021-02-27<br />
+                            {
+                                certificate
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "certi" ? inputForm : ""
