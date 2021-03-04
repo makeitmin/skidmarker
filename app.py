@@ -200,7 +200,9 @@ def create():
             name = data.get('project')
             detail = data.get('project_detail')
             start_date = data.get('project_start')
+            start_date = start_date.split("T")[0]
             end_date = data.get('project_end')
+            end_date = end_date.split("T")[0]
 
             # 유효성 검증 - null 일 경우
             if not name:
@@ -227,6 +229,7 @@ def create():
             name = data.get('certi')
             organization = data.get('certi_detail')
             acq_date = data.get('certi_date')
+            acq_date = acq_date.split("T")[0]
 
             # 유효성 검증 - null 일 경우
             if not name:
@@ -244,6 +247,30 @@ def create():
 
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
+
+## READ API
+@app.route('/user/portfolio/read', methods=['GET', 'POST'])
+def read():
+
+    data = request.get_json()
+    user_id = int(data.get('userId'))
+    
+    sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
+    cursor.execute(sql_education, (user_id,))
+    education = cursor.fetchall()
+
+    sql_award = "SELECT `name`, `detail` FROM `award`"
+    cursor.execute(sql_award)
+    award = cursor.fetchall()
+
+    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project`"
+    cursor.execute(sql_project)
+    project = cursor.fetchall()
+
+    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate`"
+    cursor.execute(sql_certificate)
+    certificate = cursor.fetchall()
+    return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
 if __name__ == '__main__':
     app.run()
