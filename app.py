@@ -270,18 +270,54 @@ def read():
     sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
     cursor.execute(sql_education, (user_id,))
     education = cursor.fetchall()
+    db.commit()
 
     sql_award = "SELECT `name`, `detail` FROM `award` WHERE `user_id`= %s"
     cursor.execute(sql_award, (user_id,))
     award = cursor.fetchall()
+    db.commit()
 
     sql_project = "SELECT `name`, `detail`, DATE_FORMAT(`start_date`, '%%Y-%%m-%%d'), DATE_FORMAT(`end_date`, '%%Y-%%m-%%d') FROM `project` WHERE `user_id`= %s"
     cursor.execute(sql_project, (user_id,))
     project = cursor.fetchall()
+    db.commit()
 
     sql_certificate = "SELECT `name`, `organization`, DATE_FORMAT(`acq_date`, '%%Y-%%m-%%d') FROM `certificate` WHERE `user_id`= %s"
     cursor.execute(sql_certificate, (user_id,))
     certificate = cursor.fetchall()
+    db.commit()
+
+    return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
+
+## DELETE API
+@app.route('/user/portfolio/delete', methods=['GET', 'POST'])
+def delete():
+
+    data = request.get_json()
+
+    user_id = data.get('userId')
+    id = data.get('id')
+    group = data.get('group')
+    
+    if group == "education":
+        sql_education = "DELETE FROM `education` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_education, (user_id, id,))
+        db.commit()
+
+    elif group == "award":
+        sql_award = "DELETE FROM `award` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_award, (user_id, id,))
+        db.commit()
+
+    elif group == "project":
+        sql_project = "DELETE FROM `project` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_project, (user_id, id,))
+        db.commit()
+
+    elif group == "certificate":
+        sql_certificate = "DELETE FROM `certificate` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_certificate, (user_id, id,))
+        db.commit()
 
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
