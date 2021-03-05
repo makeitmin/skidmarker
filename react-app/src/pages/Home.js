@@ -24,8 +24,11 @@ function EducationForm(props){
         var data = {form_header: formHeader, school: formSchool, major: formMajor, degree: formDegree, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                console.log(response.data);
-                props.setFunc("");
+                var newEducation = [formSchool, formMajor, formDegree];
+                var newEducationList = [...props.education];
+                newEducationList.push(<li>{newEducation[0]}{"  "}{newEducation[1]}{"  "}{newEducation[2]}</li>);
+                props.setEducation(newEducationList);
+                props.setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -102,7 +105,7 @@ function EducationForm(props){
                 <Form.Group as={Row}>
                     <Col sm={{ span: 10, offset: 2 }}>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
                     
                     </Col>
                 </Form.Group>
@@ -115,15 +118,18 @@ function AwardForm(props){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
-
+    
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = 'award'
         var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                console.log(response.data);
-                props.setFunc("");
+                var newAward = [formAward, formAwardDetail];
+                var newAwardList = [...props.award];
+                newAwardList.push(<li>{newAward[0]}{"  "}{newAward[1]}</li>);
+                props.setAward(newAwardList);
+                props.setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -137,7 +143,7 @@ function AwardForm(props){
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -149,8 +155,17 @@ function ProjectForm(props){
     const [formProject, setFormProject] = useState();
     const [formProjectDetail, setFormProjectDetail] = useState();
 
-    const [formStartDate, setFormStartDate] = useState(new Date("2014/02/08"));
-    const [formEndDate, setFormEndDate] = useState(new Date("2014/02/10"));
+    const [formStartDate, setFormStartDate] = useState(new Date("2021/03/01"));
+    const [formEndDate, setFormEndDate] = useState(new Date("2021/03/02"));
+
+    function formDate(date){
+        var date = date;
+        var year = date.getFullYear();
+        var month = ("0"+(1+date.getMonth())).slice(-2);
+        var day = ("0"+date.getDate()).slice(-2);
+
+        return year+"-"+month+"-"+day;
+    }
 
     function handleSubmit(e){
         e.preventDefault();
@@ -158,8 +173,14 @@ function ProjectForm(props){
         var data = {form_header: formHeader, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
+                var startDate = formDate(formStartDate);
+                var endDate = formDate(formEndDate);
                 console.log(response.data);
-                props.setFunc("");
+                var newProject = [formProject, formProjectDetail, startDate, endDate];
+                var newProjectList = [...props.project];
+                newProjectList.push(<li>{newProject[0]}{"  "}{newProject[1]}{"  "}{newProject[2]}{"  "}{newProject[3]}</li>);
+                props.setProject(newProjectList);
+                props.setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -171,7 +192,6 @@ function ProjectForm(props){
             <Form onSubmit={handleSubmit}>
                 <Form.Control type="text" onChange={function (e){setFormProject(e.target.value)}} placeholder="프로젝트명" /><br />
                 <Form.Control type="text" onChange={function (e){setFormProjectDetail(e.target.value)}} placeholder="상세내역" /><br />
-                {formProjectDetail}
                 <DatePicker
                     selected={formStartDate}
                     onChange={date => setFormStartDate(date)}
@@ -191,7 +211,7 @@ function ProjectForm(props){
                 /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -202,16 +222,29 @@ function CertiForm(props){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
-    const [formCertDate, setFormCertDate] = useState(new Date("2014/02/10"));
+    const [formCertDate, setFormCertDate] = useState(new Date("2021/03/01"));
     
+    function formDate(date){
+        var date = date;
+        var year = date.getFullYear();
+        var month = ("0"+(1+date.getMonth())).slice(-2);
+        var day = ("0"+date.getDate()).slice(-2);
+
+        return year+"-"+month+"-"+day;
+    }
+
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = 'certi'
         var data = {form_header: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                console.log(response.data);
-                props.setFunc("");
+                var certDate = formDate(formCertDate);
+                var newCertificate = [formCert, formCertOrg, certDate];
+                var newCertificateList = [...props.certificate];
+                newCertificateList.push(<li>{newCertificate[0]}{"  "}{newCertificate[1]}{"  "}{newCertificate[2]}</li>);
+                props.setCertificate(newCertificateList);
+                props.setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -226,7 +259,7 @@ function CertiForm(props){
                 <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setFunc("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
@@ -239,28 +272,26 @@ function Home(props){
     const [userEmail, setUserEmail] = useState();
     const [userName, setUserName] = useState();
 
-    const [school, setSchool] = useState();
-    const [major, setMajor] = useState();
-    const [degree, setDegree] = useState();
-
+    const [education, setEducation] = useState();
     const [award, setAward] = useState();
-    const [awardDetail, setAwardDetail] = useState();
+    const [project, setProject] = useState();
+    const [certificate, setCertificate] = useState();
 
     const [toggle, setToggle] = useState();
 
     var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm userId={userId} setFunc={setToggle} />);
+        inputForm = (<EducationForm userId={userId} setToggle={setToggle} setEducation={setEducation} education={education} />);
     
     } else if (toggle === "award"){
-        inputForm = (<AwardForm userId={userId} setFunc={setToggle} />);
+        inputForm = (<AwardForm userId={userId} setToggle={setToggle} setAward={setAward} award={award} />);
 
     } else if (toggle === "project"){
-        inputForm = (<ProjectForm userId={userId} setFunc={setToggle} />);
+        inputForm = (<ProjectForm userId={userId} setToggle={setToggle} setProject={setProject} project={project} />);
 
     } else if (toggle === "certi") {
-        inputForm = (<CertiForm userId={userId} setFunc={setToggle} />);
+        inputForm = (<CertiForm userId={userId} setToggle={setToggle} setCertificate={setCertificate} certificate={certificate} />);
 
     }
 
@@ -275,18 +306,64 @@ function Home(props){
             setUserId(response.data.user_id);
             setUserEmail(response.data.user_email);
             setUserName(response.data.user_name);
-
-            var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
-            .then(function (response){
-                var res = response.data.education
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log("전송 에러");
-            })
         })
     }, [])
+
+    useEffect(() => {
+        if(!userId) return
+            var data = {userId: userId};
+            axios.post("http://localhost:5000/user/portfolio/read", data)
+            .then(function(response){
+                var responseEducation = response.data.education;
+                var educationList = [];
+                for(var i=0; i<responseEducation.length; i++){
+                    educationList.push(<li>{responseEducation[i][0]}{"  "}{responseEducation[i][1]}{"  "}{responseEducation[i][2]}</li>);
+                }
+                setEducation(educationList);
+            })
+    }, [userId])
+
+    useEffect(() => {
+        if(!userId) return
+            var data = {userId: userId};
+            axios.post("http://localhost:5000/user/portfolio/read", data)
+            .then(function(response){
+                var responseAward = response.data.award;
+                var awardList = [];
+                for(var i=0; i<responseAward.length; i++){
+                    awardList.push(<li>{responseAward[i][0]}{"  "}{responseAward[i][1]}</li>);
+                }
+                setAward(awardList);
+            })
+    }, [userId])
+
+    useEffect(() => {
+        if(!userId) return
+            var data = {userId: userId};
+            axios.post("http://localhost:5000/user/portfolio/read", data)
+            .then(function(response){
+                var responseProject = response.data.project;
+                var projectList = [];
+                for(var i=0; i<responseProject.length; i++){
+                    projectList.push(<li>{responseProject[i][0]}{"  "}{responseProject[i][1]}{"  "}{responseProject[i][2]}{"  "}{responseProject[i][3]}</li>);
+                }
+                setProject(projectList);
+            })
+    }, [userId])
+
+    useEffect(() => {
+        if(!userId) return
+            var data = {userId: userId};
+            axios.post("http://localhost:5000/user/portfolio/read", data)
+            .then(function(response){
+                var responseCertificate = response.data.certificate;
+                var certificateList = [];
+                for(var i=0; i<responseCertificate.length; i++){
+                    certificateList.push(<li>{responseCertificate[i][0]}{"  "}{responseCertificate[i][1]}{"  "}{responseCertificate[i][2]}</li>);
+                }
+                setCertificate(certificateList);
+            })
+    }, [userId])
 
     function logout(){
         sessionStorage.removeItem("token");
@@ -309,7 +386,7 @@ function Home(props){
                     <Nav.Link eventKey="/portfolio">네트워크</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                    { sessionStorage.length != 0 ? <Nav.Link onClick={logout} eventKey="/">로그아웃</Nav.Link> : <Nav.Link eventKey="/login">로그인</Nav.Link> }
+                    { sessionStorage.length !== 0 ? <Nav.Link onClick={logout} eventKey="/">로그아웃</Nav.Link> : <Nav.Link eventKey="/login">로그인</Nav.Link> }
                     
                 </Nav.Item>
             </Nav>
@@ -335,8 +412,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>학력</Card.Title>
                         <Card.Text>
-                            OO 대학교<br />
-                            YYY 학부 XXXX 학과<br />
+                            {
+                                education
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "education" ? inputForm : ""
@@ -348,8 +426,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>수상이력</Card.Title>
                         <Card.Text>
-                            ABCDEF 대회<br />
-                            AA BB CC DD EE FF<br />
+                            {
+                                award
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "award" ? inputForm : ""
@@ -361,9 +440,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>프로젝트</Card.Title>
                         <Card.Text>
-                            레이서 포트폴리오 프로젝트<br />
-                            포트폴리오 웹서비스 구현 및 배포<br />
-                            2021-02-27 ~ 2021-03-04<br />
+                            {
+                                project
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "project" ? inputForm : ""
@@ -375,9 +454,9 @@ function Home(props){
                         <Card.Body>
                         <Card.Title>자격증</Card.Title>
                         <Card.Text>
-                            WWW 자격증<br />
-                            RRR GGGG DDDD SSSSS<br />
-                            2021-02-27<br />
+                            {
+                                certificate
+                            }<br />
                         </Card.Text>
                         {
                             toggle === "certi" ? inputForm : ""

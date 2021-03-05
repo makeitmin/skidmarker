@@ -4,6 +4,12 @@ from flask_jwt_extended import JWTManager
 from flask_restful import reqparse, abort, Resource
 
 import pymysql
+# from flask_migrate import Migrate
+# from flask_sqlalchemy import SQLAlchemy
+
+# from models import User
+
+# import config
 
 from flask import jsonify
 from flask import request
@@ -13,7 +19,14 @@ from flask_cors import CORS
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
+# db = SQLAlchemy()
+# migrate = Migrate()
+
 app = Flask(__name__)
+# app.config.from_object(config)
+# db.init_app(app)
+# migrate.init_app(app, db)
+
 CORS(app)
 
 app.config.update(DEBUG = True, JWT_SECRET_KEY = "adminSeongmin")
@@ -38,7 +51,6 @@ def index():
 # 홈 API 구현하기
 @app.route('/home')
 def home():
-
     return ''
 
 # 회원가입/로그인 API 구현하기
@@ -253,24 +265,61 @@ def create():
 def read():
 
     data = request.get_json()
-    user_id = int(data.get('userId'))
+    user_id = data.get('userId')
     
     sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
     cursor.execute(sql_education, (user_id,))
     education = cursor.fetchall()
+    db.commit()
 
-    sql_award = "SELECT `name`, `detail` FROM `award`"
-    cursor.execute(sql_award)
+    sql_award = "SELECT `name`, `detail` FROM `award` WHERE `user_id`= %s"
+    cursor.execute(sql_award, (user_id,))
     award = cursor.fetchall()
+    db.commit()
 
-    sql_project = "SELECT `name`, `detail`, `start_date`, `end_date` FROM `project`"
-    cursor.execute(sql_project)
+    sql_project = "SELECT `name`, `detail`, DATE_FORMAT(`start_date`, '%%Y-%%m-%%d'), DATE_FORMAT(`end_date`, '%%Y-%%m-%%d') FROM `project` WHERE `user_id`= %s"
+    cursor.execute(sql_project, (user_id,))
     project = cursor.fetchall()
+    db.commit()
 
-    sql_certificate = "SELECT `name`, `organization`, `acq_date` FROM `certificate`"
-    cursor.execute(sql_certificate)
+    sql_certificate = "SELECT `name`, `organization`, DATE_FORMAT(`acq_date`, '%%Y-%%m-%%d') FROM `certificate` WHERE `user_id`= %s"
+    cursor.execute(sql_certificate, (user_id,))
     certificate = cursor.fetchall()
+    db.commit()
+
+    return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
+
+## DELETE API
+@app.route('/user/portfolio/delete', methods=['GET', 'POST'])
+def delete():
+
+    data = request.get_json()
+
+    user_id = data.get('userId')
+    id = data.get('id')
+    group = data.get('group')
+    
+    if group == "education":
+        sql_education = "DELETE FROM `education` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_education, (user_id, id,))
+        db.commit()
+
+    elif group == "award":
+        sql_award = "DELETE FROM `award` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_award, (user_id, id,))
+        db.commit()
+
+    elif group == "project":
+        sql_project = "DELETE FROM `project` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_project, (user_id, id,))
+        db.commit()
+
+    elif group == "certificate":
+        sql_certificate = "DELETE FROM `certificate` WHERE `user_id`= %s AND `id` = %s"
+        cursor.execute(sql_certificate, (user_id, id,))
+        db.commit()
+
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
 if __name__ == '__main__':
-    app.run()
+    app.run("0.0.0.0", port=5000, threaded = False)
