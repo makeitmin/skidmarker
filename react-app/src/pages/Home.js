@@ -20,10 +20,18 @@ function PortfolioItemContents(props){
 }
 
 function PortfolioItemList(props){
+    var mode = props.mode;
     var item = props.item;
     var showItem = [];
+
     for (var content of item) {
-        showItem.push(<PortfolioItemContents content={content}/>);
+        showItem.push(<PortfolioItemContents content={content} />);
+    }
+
+    function handleClick(e){
+        //e.preventDefault();
+        props.setMode("UPDATE");
+        props.setToggle(props.toggle)
     }
 
     return(
@@ -31,14 +39,17 @@ function PortfolioItemList(props){
             <Row>
                 <Col style={{textAlign: "left"}}>
                     <div>
-                        {showItem}
-                        <hr />
+                        <div>
+                            {showItem}
+                        </div>
+                        <br />
                     </div>
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <a href="#">Edit</a>
+                    <Button variant="primary" onClick={function(e){ props.setToggle("award"); }}>Edit</Button>
                 </Col>
+
             </Row>
         </>
     )
@@ -155,16 +166,35 @@ function AwardForm(props){
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
 
-    function handleSubmit(e){
+    var form = null;
+    var group = 'award';
+
+    function handleUpdate(e){
+        e.preventDefault();
+        var data = {group: group, id: 3};
+        axios.post("http://localhost:5000/user/portfolio/update", data)
+            .then(function (response){
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log("전송 에러");
+            })
+    }
+
+    function handleCreate(e){
         e.preventDefault();
         var formHeader = 'award'
         var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        var form = null;
+
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                var newAward = [formAward, formAwardDetail];
-                var newAwardList = [...props.award];
-                newAwardList.push(<li>{newAward[0]}{"  "}{newAward[1]}</li>);
-                props.setAward(newAwardList);
+                var responseAward = response.data.award;
+                var awardList = [...props.award];
+                for (var item of responseAward) {
+                    awardList.push(<PortfolioItemList item={item} setMode={props.setMode} mode={props.mode} toggle={props.toggle} setToggle={props.setToggle} />);
+                }
+                props.setAward(awardList);
                 props.setToggle("");
             })
             .catch((err) => {
@@ -172,9 +202,26 @@ function AwardForm(props){
             })
     }
 
-    return(
-        <>
-            <Form onSubmit={handleSubmit}>
+    if (props.mode === "UPDATE"){
+        form = (
+            <>
+            <Form onSubmit={handleUpdate}>
+                <Form.Control type="text" onChange={function (e){setFormAward(e.target.value)}} placeholder="수상내역 입력" /><br />
+                <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
+                <center>
+                    <Button variant="primary" type="submit">확인</Button>
+                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
+                </center>
+                
+            </Form>
+            
+            </>
+        );
+
+    } else if(props.mode === "CREATE"){
+        form = (
+            <>
+            <Form onSubmit={handleCreate}>
                 <Form.Control type="text" onChange={function (e){setFormAward(e.target.value)}} placeholder="수상내역 입력" /><br />
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
@@ -182,6 +229,14 @@ function AwardForm(props){
                     <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
+            
+            </>
+        );
+    }
+
+    return(
+        <>
+            {form}
         </>
     )
 }
@@ -304,6 +359,9 @@ function CertiForm(props){
 
 function Home(props){
 
+    const [mode, setMode] = useState();
+    const [inputForm, setInputForm] = useState();
+
     const [userId, setUserId] = useState();
     const [userEmail, setUserEmail] = useState();
     const [userName, setUserName] = useState();
@@ -314,20 +372,18 @@ function Home(props){
     const [certificate, setCertificate] = useState();
 
     const [toggle, setToggle] = useState();
-
-    var inputForm = null;
     
     if (toggle === "education"){
-        inputForm = (<EducationForm userId={userId} setToggle={setToggle} setEducation={setEducation} education={education} />);
+        setInputForm(<EducationForm userId={userId} setToggle={setToggle} setEducation={setEducation} education={education} />);
     
     } else if (toggle === "award"){
-        inputForm = (<AwardForm userId={userId} setToggle={setToggle} setAward={setAward} award={award} />);
+        setInputForm(<AwardForm userId={userId} setToggle={setToggle} toggle={toggle} setAward={setAward} award={award} />);
 
     } else if (toggle === "project"){
-        inputForm = (<ProjectForm userId={userId} setToggle={setToggle} setProject={setProject} project={project} />);
+        setInputForm(<ProjectForm userId={userId} setToggle={setToggle} setProject={setProject} project={project} />);
 
     } else if (toggle === "certi") {
-        inputForm = (<CertiForm userId={userId} setToggle={setToggle} setCertificate={setCertificate} certificate={certificate} />);
+        setInputForm(<CertiForm userId={userId} setToggle={setToggle} setCertificate={setCertificate} certificate={certificate} />);
 
     }
 
@@ -367,7 +423,7 @@ function Home(props){
                 var responseAward = response.data.award;
                 var awardList = [];
                 for (var item of responseAward) {
-                    awardList.push(<PortfolioItemList item={item}/>);
+                    awardList.push(<PortfolioItemList item={item} award={award} setAward={setAward} setMode={setMode} mode={mode} toggle={toggle} setToggle={setToggle}/>);
                 }
                 
                 setAward(awardList);
@@ -471,7 +527,7 @@ function Home(props){
                             toggle === "award" ? inputForm : ""
                         }
                         </Card.Body>
-                        <Button variant="light" onClick={function (e){ setToggle("award"); }}>추가하기</Button>
+                        <Button variant="light" onClick={function (e){ setToggle("award"); setMode("CREATE");}}>추가하기</Button>
                     </Card><br />
                     <Card>
                         <Card.Body>
