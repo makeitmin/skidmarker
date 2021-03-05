@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Home from "./Home"
+import User from "./User"
 import Register from "./Register"
 
 import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
