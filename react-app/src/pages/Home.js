@@ -8,6 +8,42 @@ import "react-datepicker/dist/react-datepicker.css";
 import './style.css';
 import rachel from './rachel.gif';
 
+function PortfolioItemContents(props){
+    
+    var content = props.content;
+
+    return(
+        <>
+            {content}<br />
+        </>
+    )
+}
+
+function PortfolioItemList(props){
+    var item = props.item;
+    var showItem = [];
+    for (var content of item) {
+        showItem.push(<PortfolioItemContents content={content}/>);
+    }
+
+    return(
+        <>  
+            <Row>
+                <Col style={{textAlign: "left"}}>
+                    <div>
+                        {showItem}
+                        <hr />
+                    </div>
+                    
+                </Col>
+                <Col md="auto" style={{textAlign: "right"}}>
+                    <a href="#">Edit</a>
+                </Col>
+            </Row>
+        </>
+    )
+}
+
 function EducationForm(props){
     
     const [formSchool, setFormSchool] = useState();
@@ -118,7 +154,7 @@ function AwardForm(props){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
-    
+
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = 'award'
@@ -267,7 +303,7 @@ function CertiForm(props){
 }
 
 function Home(props){
-    
+
     const [userId, setUserId] = useState();
     const [userEmail, setUserEmail] = useState();
     const [userName, setUserName] = useState();
@@ -316,8 +352,8 @@ function Home(props){
             .then(function(response){
                 var responseEducation = response.data.education;
                 var educationList = [];
-                for(var i=0; i<responseEducation.length; i++){
-                    educationList.push(<li>{responseEducation[i][0]}{"  "}{responseEducation[i][1]}{"  "}{responseEducation[i][2]}</li>);
+                for (var item of responseEducation) {
+                    educationList.push(<PortfolioItemList item={item}/>);
                 }
                 setEducation(educationList);
             })
@@ -330,9 +366,10 @@ function Home(props){
             .then(function(response){
                 var responseAward = response.data.award;
                 var awardList = [];
-                for(var i=0; i<responseAward.length; i++){
-                    awardList.push(<li>{responseAward[i][0]}{"  "}{responseAward[i][1]}</li>);
+                for (var item of responseAward) {
+                    awardList.push(<PortfolioItemList item={item}/>);
                 }
+                
                 setAward(awardList);
             })
     }, [userId])
@@ -344,8 +381,8 @@ function Home(props){
             .then(function(response){
                 var responseProject = response.data.project;
                 var projectList = [];
-                for(var i=0; i<responseProject.length; i++){
-                    projectList.push(<li>{responseProject[i][0]}{"  "}{responseProject[i][1]}{"  "}{responseProject[i][2]}{"  "}{responseProject[i][3]}</li>);
+                for (var item of responseProject) {
+                    projectList.push(<PortfolioItemList item={item}/>);
                 }
                 setProject(projectList);
             })
@@ -358,8 +395,8 @@ function Home(props){
             .then(function(response){
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
-                for(var i=0; i<responseCertificate.length; i++){
-                    certificateList.push(<li>{responseCertificate[i][0]}{"  "}{responseCertificate[i][1]}{"  "}{responseCertificate[i][2]}</li>);
+                for (var item of responseCertificate) {
+                    certificateList.push(<PortfolioItemList item={item}/>);
                 }
                 setCertificate(certificateList);
             })
@@ -410,7 +447,7 @@ function Home(props){
                 <Col>
                     <Card>
                         <Card.Body>
-                        <Card.Title>학력</Card.Title>
+                        <Card.Title>학력</Card.Title><br />
                         <Card.Text>
                             {
                                 education
@@ -424,7 +461,7 @@ function Home(props){
                     </Card><br />
                     <Card>
                         <Card.Body>
-                        <Card.Title>수상이력</Card.Title>
+                        <Card.Title>수상이력</Card.Title><br />
                         <Card.Text>
                             {
                                 award
@@ -438,7 +475,7 @@ function Home(props){
                     </Card><br />
                     <Card>
                         <Card.Body>
-                        <Card.Title>프로젝트</Card.Title>
+                        <Card.Title>프로젝트</Card.Title><br />
                         <Card.Text>
                             {
                                 project
@@ -452,7 +489,7 @@ function Home(props){
                     </Card><br />
                     <Card>
                         <Card.Body>
-                        <Card.Title>자격증</Card.Title>
+                        <Card.Title>자격증</Card.Title><br />
                         <Card.Text>
                             {
                                 certificate
