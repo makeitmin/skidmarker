@@ -322,14 +322,14 @@ def delete():
 
 # 사용자 네트워크 API
 
-@app.route('/network', methods=['GET'])
+@app.route('/network', methods=['GET', 'POST'])
 def readAll():
     
     data = request.get_json();
     user_id = data.get('userId')
 
     sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` != %s";
-    cursor.execute(sql, (user_id,))
+    cursor.execute(sql, (user_id))
     result = cursor.fetchall()
     db.commit()
 

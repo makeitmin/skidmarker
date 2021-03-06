@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 import axios from 'axios';
 
@@ -9,7 +9,9 @@ function Network(){
 
     const history = useHistory();
 
+    const [userId, setUserId] = useState();
     const [users, setUsers] = useState();
+    const [network, setNetwork] = useState();
 
     useEffect(() => { 
         const token = sessionStorage.getItem("token");
@@ -20,21 +22,37 @@ function Network(){
         })
         .then(function(response){
             setUserId(response.data.user_id);
-            setUserEmail(response.data.user_email);
-            setUserName(response.data.user_name);
         })
     }, [])
 
     useEffect(() => {
         if(!userId) return
             var data = {userId: userId};
-            axios.get("http://localhost:5000/network", data)
+            axios.post("http://localhost:5000/network", data)
             .then(function(response){
-                var users = response.data.result;
-                setUsers(users);
+                var result = response.data.result;
+                setUsers(result);
+            }).catch((err)=>{
+                console.log("전송 실패");
             })
     }, [userId])
 
+    useEffect(() => {
+        if(!users) return
+            const network = users.map((user) =>
+            <Card>
+                <Card.Img variant="top" />
+                <Card.Body>
+                <Card.Title>{user[1]}</Card.Title>
+                <Card.Text>
+                    {user[2]}
+                </Card.Text>
+                </Card.Body>
+            </Card>
+            );
+            setNetwork(network);
+    }, [users])
+    
     function Logout(){
         sessionStorage.removeItem("token");
         history.replace("/login");
@@ -65,86 +83,7 @@ function Network(){
                 </Row>
                 <Row>
                     <CardColumns>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                            <Card.Title>Card title that wraps to a new line</Card.Title>
-                            <Card.Text>
-                                This is a longer card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.
-                            </Card.Text>
-                            </Card.Body>
-                        </Card>
+                        {network}
                     </CardColumns>
                 </Row>
             </div>
