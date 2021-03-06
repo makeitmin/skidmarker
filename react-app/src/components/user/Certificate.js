@@ -50,7 +50,7 @@ function Certificate(props){
                 <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>

@@ -42,7 +42,7 @@ export function PortfolioItem(props){
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary" onClick={function(e){props.setToggle(group);}}>수정</Button><br />
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
                     <Button variant="danger">삭제</Button>
                 </Col>
             </Row>
@@ -71,16 +71,16 @@ function User() {
     
     // 각 toggle 값에 따라 열어주는 폼이 상이
     if (toggle === "education"){
-        inputForm = (<Education userId={userId} setToggle={setToggle} setEducation={setEducation} education={education} />);
+        inputForm = (<Education userId={userId} setToggle={(group)=>{setToggle(group);}} setEducation={setEducation} education={education} />);
     
     } else if (toggle === "award"){
-        inputForm = (<Award userId={userId} setToggle={setToggle} setAward={setAward} award={award} />);
+        inputForm = (<Award userId={userId} setToggle={(group)=>{setToggle(group);}} setAward={setAward} award={award} />);
 
     } else if (toggle === "project"){
-        inputForm = (<Project userId={userId} setToggle={setToggle} setProject={setProject} project={project} />);
+        inputForm = (<Project userId={userId} setToggle={(group)=>{setToggle(group);}} setProject={setProject} project={project} />);
 
     } else if (toggle === "certificate") {
-        inputForm = (<Certificate userId={userId} setToggle={setToggle} setCertificate={setCertificate} certificate={certificate} />);
+        inputForm = (<Certificate userId={userId} setToggle={(group)=>{setToggle(group);}} setCertificate={setCertificate} certificate={certificate} />);
 
     }
 
@@ -109,7 +109,7 @@ function User() {
                 var responseEducation = response.data.education;
                 var educationList = [];
                 for(var item of responseEducation){
-                    educationList.push(<PortfolioItem item={item}/>);
+                    educationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
                 }
                 setEducation(educationList);
             })
@@ -137,7 +137,7 @@ function User() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item} />);
+                    projectList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"project"} />);
                 }
                 setProject(projectList);
             })
@@ -151,7 +151,7 @@ function User() {
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
                 for(var item of responseCertificate){
-                    certificateList.push(<PortfolioItem item={item}/>);
+                    certificateList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"certificate"} />);
                 }
                 setCertificate(certificateList);
             })

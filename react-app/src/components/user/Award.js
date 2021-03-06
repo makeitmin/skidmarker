@@ -35,7 +35,7 @@ function Award(props){
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
