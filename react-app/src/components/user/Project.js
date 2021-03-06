@@ -1,14 +1,15 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import './style.css';
-import rachel from './rachel.gif';
+import { Button, Form} from 'react-bootstrap';
+import '../../pages/static/css/style.css';
 
-export function Project(props){
+import { PortfolioItem } from '../../pages/User';
+
+function Project(props){
 
     const [formProject, setFormProject] = useState();
     const [formProjectDetail, setFormProjectDetail] = useState();
@@ -16,8 +17,8 @@ export function Project(props){
     const [formStartDate, setFormStartDate] = useState(new Date("2021/03/01"));
     const [formEndDate, setFormEndDate] = useState(new Date("2021/03/02"));
 
-    function formDate(date){
-        var date = date;
+    function formDate(_date){
+        var date = _date;
         var year = date.getFullYear();
         var month = ("0"+(1+date.getMonth())).slice(-2);
         var day = ("0"+date.getDate()).slice(-2);
@@ -33,10 +34,9 @@ export function Project(props){
             .then(function (response){
                 var startDate = formDate(formStartDate);
                 var endDate = formDate(formEndDate);
-                console.log(response.data);
-                var newProject = [formProject, formProjectDetail, startDate, endDate];
+                var item = [formProject, formProjectDetail, startDate, endDate];
                 var newProjectList = [...props.project];
-                newProjectList.push(<li>{newProject[0]}{"  "}{newProject[1]}{"  "}{newProject[2]}{"  "}{newProject[3]}</li>);
+                newProjectList.push(<PortfolioItem item={item}/>);
                 props.setProject(newProjectList);
                 props.setToggle("");
             })
@@ -75,3 +75,5 @@ export function Project(props){
         </>
     )
 }
+
+export default Project;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router";
 import axios from 'axios';
 
-import User from "./User"
-import Register from "./Register"
+import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
+import './static/css/login.css'
 
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
-import './Login.css'
+function Login(){
 
-function Login(props){
+    const history = useHistory();
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -26,7 +26,7 @@ function Login(props){
     }
 
     function handleOnClick(){
-        props.history.push("/register");
+        history.push("/register");
     }
 
     function handleSubmit(e) {
@@ -37,12 +37,11 @@ function Login(props){
             .then(function (response){
                 var res = response.data.access_token
                 setToken(res);
-                props.history.replace("/home");
+                history.replace("/user");
             })
             .catch((err) => {
                 console.log("전송 에러");
             })
-        
     }
     
     return (
@@ -68,11 +67,11 @@ function Login(props){
             <center>
                 <form onSubmit={handleSubmit} action="/home">
                     
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="text" onChange={handleChangeEmail} placeholder="Enter Email Address" />
+                    <Form.Label style={{textAlign: "left"}}>Email</Form.Label>
+                    <Form.Control type="text" onChange={handleChangeEmail} placeholder="이메일을 입력하세요" />
                     
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" onChange={handleChangePassword} placeholder="Enter Password" /><br />
+                    <Form.Control type="password" onChange={handleChangePassword} placeholder="비밀번호를 입력하세요" /><br />
                     
                     <Button variant="primary" type="submit">로그인</Button><br /><br />
                     <Button variant="light" onClick={handleOnClick}>회원가입</Button>

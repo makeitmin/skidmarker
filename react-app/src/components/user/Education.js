@@ -1,14 +1,12 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { Row, Col, Button, Form} from 'react-bootstrap';
+import '../../pages/static/css/style.css';
 
-import './style.css';
-import rachel from './rachel.gif';
+import { PortfolioItem } from '../../pages/User';
 
-export function Education(props){
+function Education(props){
     
     const [formSchool, setFormSchool] = useState();
     const [formMajor, setFormMajor] = useState();
@@ -24,9 +22,9 @@ export function Education(props){
         var data = {form_header: formHeader, school: formSchool, major: formMajor, degree: formDegree, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                var newEducation = [formSchool, formMajor, formDegree];
+                var item = [formSchool, formMajor, formDegree];
                 var newEducationList = [...props.education];
-                newEducationList.push(<li>{newEducation[0]}{"  "}{newEducation[1]}{"  "}{newEducation[2]}</li>);
+                newEducationList.push(<PortfolioItem item={item}/>);
                 props.setEducation(newEducationList);
                 props.setToggle("");
             })
@@ -101,15 +99,13 @@ export function Education(props){
                     </Col>
                     </Form.Group>
                 </fieldset>
-
-                <Form.Group as={Row}>
-                    <Col sm={{ span: 10, offset: 2 }}>
+                <center>
                     <Button variant="primary" type="submit">확인</Button>
                     <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
-                    
-                    </Col>
-                </Form.Group>
+                </center>
             </Form>
         </>
     )
 }
+
+export default Education;

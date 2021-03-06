@@ -1,21 +1,22 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import './style.css';
-import rachel from './rachel.gif';
+import { Button, Form} from 'react-bootstrap';
+import '../../pages/static/css/style.css';
 
-export function Certificate(props){
+import { PortfolioItem } from '../../pages/User';
+
+function Certificate(props){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
     const [formCertDate, setFormCertDate] = useState(new Date("2021/03/01"));
     
-    function formDate(date){
-        var date = date;
+    function formDate(_date){
+        var date = _date;
         var year = date.getFullYear();
         var month = ("0"+(1+date.getMonth())).slice(-2);
         var day = ("0"+date.getDate()).slice(-2);
@@ -30,9 +31,9 @@ export function Certificate(props){
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 var certDate = formDate(formCertDate);
-                var newCertificate = [formCert, formCertOrg, certDate];
+                var item = [formCert, formCertOrg, certDate];
                 var newCertificateList = [...props.certificate];
-                newCertificateList.push(<li>{newCertificate[0]}{"  "}{newCertificate[1]}{"  "}{newCertificate[2]}</li>);
+                newCertificateList.push(<PortfolioItem item={item}/>);
                 props.setCertificate(newCertificateList);
                 props.setToggle("");
             })
@@ -55,3 +56,4 @@ export function Certificate(props){
         </>
     )
 }
+export default Certificate;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
-import './Login.css'
+import './static/css/login.css'
 
 function Register(props){
     const [email, setEmail] = useState();

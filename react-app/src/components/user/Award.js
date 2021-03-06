@@ -1,33 +1,31 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Nav, Card, Row, Col, Button, Form } from 'react-bootstrap'
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { Button, Form } from 'react-bootstrap';
+import '../../pages/static/css/style.css';
 
-import './style.css';
-import rachel from './rachel.gif';
+import { PortfolioItem } from '../../pages/User';
 
-export function Award(props){
+function Award(props){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
-
+    
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = 'award'
+        var formHeader = "award";
         var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
-            .then(function (response){
-                var newAward = [formAward, formAwardDetail];
-                var newAwardList = [...props.award];
-                newAwardList.push(<li>{newAward[0]}{"  "}{newAward[1]}</li>);
-                props.setAward(newAwardList);
-                props.setToggle("");
-            })
-            .catch((err) => {
-                console.log("전송 에러");
-            })
+        .then(function (response){
+            var item = [formAward, formAwardDetail];
+            var newAwardList = [...props.award];
+            newAwardList.push(<PortfolioItem item={item}/>);
+            props.setAward(newAwardList);
+            props.setToggle("");
+        })
+        .catch((err) => {
+            console.log("전송 에러");
+        })
     }
 
     return(
@@ -44,3 +42,4 @@ export function Award(props){
     )
 }
 
+export default Award;
