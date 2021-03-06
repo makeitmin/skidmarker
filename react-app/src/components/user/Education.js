@@ -6,7 +6,7 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Education({ userId, item, itemId, setItemId, setToggle, education, setEducation }){
+function Education({ userId, item, setToggle, education, setEducation }){
     
     const [formSchool, setFormSchool] = useState();
     const [formMajor, setFormMajor] = useState();
@@ -24,9 +24,9 @@ function Education({ userId, item, itemId, setItemId, setToggle, education, setE
             .then(function (response){
                 var item = [formSchool, formMajor, formDegree];
                 var newEducationList = [...education];
-                newEducationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} itemId={itemId} setItemId={setItemId} />);
-                props.setEducation(newEducationList);
-                props.setToggle("");
+                newEducationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
+                setEducation(newEducationList);
+                setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");

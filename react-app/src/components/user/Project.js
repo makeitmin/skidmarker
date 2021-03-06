@@ -9,7 +9,7 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Project({ userId, item, itemId, setItemId, setToggle, project, setProject }){
+function Project({ userId, item, setToggle, project, setProject }){
 
     const [formProject, setFormProject] = useState();
     const [formProjectDetail, setFormProjectDetail] = useState();

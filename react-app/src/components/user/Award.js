@@ -6,12 +6,14 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Award({ userId, item, itemId, setItemId, setToggle, award, setAward }){
+function Award({ userId, item, setToggle, award, setAward }){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
     
     var group = "award";
+
+    var itemId = 0;
 
     function updateHandler(e){
         e.preventDefault();

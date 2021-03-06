@@ -9,7 +9,7 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Certificate({ userId, item, itemId, setItemId, setToggle, certificate, setCertificate }){
+function Certificate({ userId, item, setToggle, certificate, setCertificate }){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
