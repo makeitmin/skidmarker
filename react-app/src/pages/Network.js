@@ -9,6 +9,22 @@ function Network(){
 
     const history = useHistory();
 
+    const [users, setUsers] = useState();
+
+    useEffect(() => { 
+        const token = sessionStorage.getItem("token");
+        axios.get("http://localhost:5000/auth/info", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(function(response){
+            setUserId(response.data.user_id);
+            setUserEmail(response.data.user_email);
+            setUserName(response.data.user_name);
+        })
+    }, [])
+
     function Logout(){
         sessionStorage.removeItem("token");
         history.replace("/login");
