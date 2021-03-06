@@ -1,37 +1,41 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router";
+import axios from 'axios';
+
 import { Nav, Card, Row, Col, Button, Form, CardColumns } from 'react-bootstrap'
+import './static/css/style.css';
 
-import './style.css';
+function Network(){
 
-function Network(props){
+    const history = useHistory();
 
-    function logout(){
+    function Logout(){
         sessionStorage.removeItem("token");
-        props.history.replace("/login");
+        history.replace("/login");
     }
 
     return (
         <>
             <div class="wrap">
                 <Row>
-                <Col md="auto">
-                    RacerIn
-                </Col>
-                <Col style={{textAlign: "left"}}>
-                    <Nav className="justify-content-end" activeKey="/home">
-                        <Nav.Item>
-                        <Nav.Link href="/home">메인</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                        <Nav.Link eventKey="/network">네트워크</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                        { sessionStorage.length !== 0 ? <Nav.Link onClick={logout} eventKey="/">로그아웃</Nav.Link> : <Nav.Link eventKey="/login">로그인</Nav.Link> }
-                        
-                    </Nav.Item>
-                </Nav>
-                </Col>
+                    <Col md="auto">
+                        RacerIn
+                    </Col>
+                    <Col style={{textAlign: "left"}}>
+                        <Nav className="justify-content-end" activeKey="/user">
+                            <Nav.Item>
+                            <Nav.Link href="/user">메인</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                            <Nav.Link eventKey="/network">네트워크</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                            { sessionStorage.length !== 0 ? 
+                                <Nav.Link onClick={Logout} eventKey="/">로그아웃</Nav.Link> : <Nav.Link eventKey="/login">로그인</Nav.Link> 
+                            }
+                            </Nav.Item>
+                        </Nav>
+                    </Col>
                 </Row>
                 <Row>
                     <CardColumns>

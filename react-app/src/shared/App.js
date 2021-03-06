@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { Register, Login, Home, Network } from '../pages';
+import Register from '../pages/Register';
+import Login from '../pages/Login';
+import Network from '../pages/Network';
+import User from '../pages/User';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,7 +17,7 @@ class App extends Component {
                 }
                 <Route exact path="/login" component={Login}/>
                 <Switch>
-                    <Route path="/home" component={Home}/>
+                    <Route path="/user" component={User}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/network" component={Network}/>
                 </Switch>
