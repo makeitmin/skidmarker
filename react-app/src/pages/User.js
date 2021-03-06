@@ -27,10 +27,25 @@ export function PortfolioItem(props){
     var item = props.item;
     var group = props.group;
     var showItem = [];
+    var itemId = item[0];
+
     for (var content of item) {
-        var data = [{content: content}];
         showItem.push(<PortfolioItemContent content={content} />);
     }
+
+    function deleteHandler(e){
+        e.preventDefault();
+        var data = {id: itemId, group: group}
+        axios.post("http://localhost:5000/user/portfolio/delete", data)
+            .then(function(response){
+                console.log(response.data);
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log("삭제 실패");
+            })
+    }
+
     return(
         <>  
             <Row>
@@ -43,7 +58,7 @@ export function PortfolioItem(props){
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
                     <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
-                    <Button variant="danger">삭제</Button>
+                    <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>
         </>

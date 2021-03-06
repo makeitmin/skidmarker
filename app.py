@@ -267,22 +267,22 @@ def read():
     data = request.get_json()
     user_id = data.get('userId')
     
-    sql_education = "SELECT `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
+    sql_education = "SELECT `id`, `univ_name`, `major`, `degree` FROM `education` WHERE `user_id`= %s"
     cursor.execute(sql_education, (user_id,))
     education = cursor.fetchall()
     db.commit()
 
-    sql_award = "SELECT `name`, `detail` FROM `award` WHERE `user_id`= %s"
+    sql_award = "SELECT `id`, `name`, `detail` FROM `award` WHERE `user_id`= %s"
     cursor.execute(sql_award, (user_id,))
     award = cursor.fetchall()
     db.commit()
 
-    sql_project = "SELECT `name`, `detail`, DATE_FORMAT(`start_date`, '%%Y-%%m-%%d'), DATE_FORMAT(`end_date`, '%%Y-%%m-%%d') FROM `project` WHERE `user_id`= %s"
+    sql_project = "SELECT `id`, `name`, `detail`, DATE_FORMAT(`start_date`, '%%Y-%%m-%%d'), DATE_FORMAT(`end_date`, '%%Y-%%m-%%d') FROM `project` WHERE `user_id`= %s"
     cursor.execute(sql_project, (user_id,))
     project = cursor.fetchall()
     db.commit()
 
-    sql_certificate = "SELECT `name`, `organization`, DATE_FORMAT(`acq_date`, '%%Y-%%m-%%d') FROM `certificate` WHERE `user_id`= %s"
+    sql_certificate = "SELECT `id`, `name`, `organization`, DATE_FORMAT(`acq_date`, '%%Y-%%m-%%d') FROM `certificate` WHERE `user_id`= %s"
     cursor.execute(sql_certificate, (user_id,))
     certificate = cursor.fetchall()
     db.commit()
@@ -295,31 +295,30 @@ def delete():
 
     data = request.get_json()
 
-    user_id = data.get('userId')
-    id = data.get('id')
+    id = int(data.get('id'))
     group = data.get('group')
     
     if group == "education":
-        sql_education = "DELETE FROM `education` WHERE `user_id`= %s AND `id` = %s"
-        cursor.execute(sql_education, (user_id, id,))
+        sql_education = "DELETE FROM `education` WHERE `id` = %s"
+        cursor.execute(sql_education, (id,))
         db.commit()
 
     elif group == "award":
-        sql_award = "DELETE FROM `award` WHERE `user_id`= %s AND `id` = %s"
-        cursor.execute(sql_award, (user_id, id,))
+        sql_award = "DELETE FROM `award` WHERE `id` = %s"
+        cursor.execute(sql_award, (id,))
         db.commit()
 
     elif group == "project":
-        sql_project = "DELETE FROM `project` WHERE `user_id`= %s AND `id` = %s"
-        cursor.execute(sql_project, (user_id, id,))
+        sql_project = "DELETE FROM `project` WHERE `id` = %s"
+        cursor.execute(sql_project, (id,))
         db.commit()
 
     elif group == "certificate":
-        sql_certificate = "DELETE FROM `certificate` WHERE `user_id`= %s AND `id` = %s"
-        cursor.execute(sql_certificate, (user_id, id,))
+        sql_certificate = "DELETE FROM `certificate` WHERE `id` = %s"
+        cursor.execute(sql_certificate, (id,))
         db.commit()
 
-    return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
+    return jsonify(status = "delete success")
 
 if __name__ == '__main__':
     app.run("0.0.0.0", port=5000, threaded = False)
