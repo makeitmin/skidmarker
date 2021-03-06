@@ -13,18 +13,18 @@ import rachel from './static/images/rachel.gif';
 
 /* 포트폴리오 항목들을 UI에 맞게 보여주기 위한 컴포넌트 */
 // PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
-export function PortfolioItem(props){
-    var item = props.item;
-    var group = props.group;
+export function PortfolioItem({ item, setToggle, group, itemId, setItemId }){
+    var item = item;
+    var group = group;
     var showItem = [];
 
-    for (var i=1; i<item.length; i++) {
+    for (var i=0; i<item.length; i++) {
         showItem.push(<ul>{item[i]}</ul>);
     }
 
     function deleteHandler(e){
         e.preventDefault();
-        var data = {id: props.itemId, group: group}
+        var data = {id: itemId, group: group}
         axios.post("http://localhost:5000/user/portfolio/delete", data)
             .then(function(response){
                 console.log(response.data);
@@ -47,7 +47,7 @@ export function PortfolioItem(props){
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group); props.setItemId(item[0]); }}>수정</Button><br />
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); setToggle(group); setItemId(item[0]); }}>수정</Button><br />
                     <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>

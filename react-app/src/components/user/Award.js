@@ -6,15 +6,16 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Award(props){
+function Award({ userId, item, itemId, setItemId, setToggle, award, setAward }){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
     
+    var group = "award";
+
     function updateHandler(e){
         e.preventDefault();
-        var group = "award";
-        var data = {id: props.itemId, group: group, name: formAward, detail: formAwardDetail}
+        var data = {id: itemId, group: group, name: formAward, detail: formAwardDetail}
         axios.post("http://localhost:5000/user/portfolio/update", data)
             .then(function(response){
                 console.log(response.data);
@@ -27,15 +28,14 @@ function Award(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = "award";
-        var data = {group: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        var data = {group: group, award: formAward, award_detail: formAwardDetail, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
         .then(function (response){
             var item = [formAward, formAwardDetail];
-            var newAwardList = [...props.award];
+            var newAwardList = [...award];
             newAwardList.push(<PortfolioItem item={item}/>);
-            props.setAward(newAwardList);
-            props.setToggle("");
+            setAward(newAwardList);
+            setToggle("");
         })
         .catch((err) => {
             console.log("전송 에러");
@@ -49,7 +49,7 @@ function Award(props){
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>

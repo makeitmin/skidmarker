@@ -347,7 +347,7 @@ def delete():
 
     data = request.get_json()
 
-    id = int(data.get('id'))
+    id = data.get('id')
     group = data.get('group')
     
     if group == "education":

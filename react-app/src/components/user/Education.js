@@ -6,7 +6,7 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Education(props){
+function Education({ userId, item, itemId, setItemId, setToggle, education, setEducation }){
     
     const [formSchool, setFormSchool] = useState();
     const [formMajor, setFormMajor] = useState();
@@ -18,13 +18,13 @@ function Education(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = 'education'
-        var data = {form_header: formHeader, school: formSchool, major: formMajor, degree: formDegree, user_id: props.userId};
+        var group = 'education'
+        var data = {group: group, school: formSchool, major: formMajor, degree: formDegree, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 var item = [formSchool, formMajor, formDegree];
-                var newEducationList = [...props.education];
-                newEducationList.push(<PortfolioItem item={item}/>);
+                var newEducationList = [...education];
+                newEducationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} itemId={itemId} setItemId={setItemId} />);
                 props.setEducation(newEducationList);
                 props.setToggle("");
             })
@@ -101,7 +101,7 @@ function Education(props){
                 </fieldset>
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>

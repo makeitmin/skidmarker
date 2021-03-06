@@ -9,12 +9,14 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Certificate(props){
+function Certificate({ userId, item, itemId, setItemId, setToggle, certificate, setCertificate }){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
     const [formCertDate, setFormCertDate] = useState(new Date("2021/03/01"));
     
+    var group = 'certificate';
+
     function formDate(_date){
         var date = _date;
         var year = date.getFullYear();
@@ -26,16 +28,16 @@ function Certificate(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = 'certificate'
-        var data = {group: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
+        
+        var data = {group: group, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 var certDate = formDate(formCertDate);
                 var item = [formCert, formCertOrg, certDate];
-                var newCertificateList = [...props.certificate];
+                var newCertificateList = [...certificate];
                 newCertificateList.push(<PortfolioItem item={item}/>);
-                props.setCertificate(newCertificateList);
-                props.setToggle("");
+                setCertificate(newCertificateList);
+                setToggle("");
             })
             .catch((err) => {
                 console.log("전송 에러");
@@ -50,7 +52,7 @@ function Certificate(props){
                 <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
