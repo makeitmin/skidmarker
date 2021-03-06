@@ -14,7 +14,7 @@ function Award(props){
     function updateHandler(e){
         e.preventDefault();
         var group = "award";
-        var data = {id: itemId, group: group, name: formAward, detail: formAwardDetail}
+        var data = {id: props.itemId, group: group, name: formAward, detail: formAwardDetail}
         axios.post("http://localhost:5000/user/portfolio/update", data)
             .then(function(response){
                 console.log(response.data);

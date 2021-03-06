@@ -12,30 +12,19 @@ import './static/css/style.css';
 import rachel from './static/images/rachel.gif';
 
 /* 포트폴리오 항목들을 UI에 맞게 보여주기 위한 컴포넌트 */
-// 포트폴리오 항목 1개 안의 1개 요소를 표시(ex. 엘리스대학교)
-export function PortfolioItemContent(props){
-    var content = props.content;
-    return(
-        <>
-            {content}<br />
-        </>
-    )
-}
-
 // PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
 export function PortfolioItem(props){
     var item = props.item;
     var group = props.group;
     var showItem = [];
-    var itemId = item[0];
 
-    for (var content of item) {
-        showItem.push(<PortfolioItemContent content={content} />);
+    for (var i=1; i<item.length; i++) {
+        showItem.push(<ul>{item[i]}</ul>);
     }
 
     function deleteHandler(e){
         e.preventDefault();
-        var data = {id: itemId, group: group}
+        var data = {id: props.itemId, group: group}
         axios.post("http://localhost:5000/user/portfolio/delete", data)
             .then(function(response){
                 console.log(response.data);
@@ -51,13 +40,14 @@ export function PortfolioItem(props){
             <Row>
                 <Col style={{textAlign: "left"}}>
                     <div>
+                        <br />
                         {showItem}
                         <hr />
                     </div>
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group); props.setItemId(item[0]); }}>수정</Button><br />
                     <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>
@@ -69,6 +59,8 @@ export function PortfolioItem(props){
 function User() {
 
     const history = useHistory();
+
+    const [itemId, setItemId] = useState();
 
     // useState 로 관리
     const [userId, setUserId] = useState();
@@ -86,16 +78,16 @@ function User() {
     
     // 각 toggle 값에 따라 열어주는 폼이 상이
     if (toggle === "education"){
-        inputForm = (<Education userId={userId} setToggle={(group)=>{setToggle(group);}} setEducation={setEducation} education={education} />);
+        inputForm = (<Education userId={userId} setToggle={(group)=>{setToggle(group);}} setEducation={setEducation} education={education} itemId={itemId} setItemId={setItemId} />);
     
     } else if (toggle === "award"){
-        inputForm = (<Award userId={userId} setToggle={(group)=>{setToggle(group);}} setAward={setAward} award={award} />);
+        inputForm = (<Award userId={userId} setToggle={(group)=>{setToggle(group);}} setAward={setAward} award={award} itemId={itemId} setItemId={setItemId} />);
 
     } else if (toggle === "project"){
-        inputForm = (<Project userId={userId} setToggle={(group)=>{setToggle(group);}} setProject={setProject} project={project} />);
+        inputForm = (<Project userId={userId} setToggle={(group)=>{setToggle(group);}} setProject={setProject} project={project} itemId={itemId} setItemId={setItemId} />);
 
     } else if (toggle === "certificate") {
-        inputForm = (<Certificate userId={userId} setToggle={(group)=>{setToggle(group);}} setCertificate={setCertificate} certificate={certificate} />);
+        inputForm = (<Certificate userId={userId} setToggle={(group)=>{setToggle(group);}} setCertificate={setCertificate} certificate={certificate} itemId={itemId} setItemId={setItemId} />);
 
     }
 
@@ -124,7 +116,7 @@ function User() {
                 var responseEducation = response.data.education;
                 var educationList = [];
                 for(var item of responseEducation){
-                    educationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
+                    educationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} itemId={itemId} setItemId={setItemId} />);
                 }
                 setEducation(educationList);
             })
@@ -138,7 +130,7 @@ function User() {
                 var responseAward = response.data.award;
                 var awardList = [];
                 for(var item of responseAward){
-                    awardList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"award"} />);
+                    awardList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"award"} itemId={itemId} setItemId={setItemId} />);
                 }
                 setAward(awardList);
             })
@@ -152,7 +144,7 @@ function User() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"project"} />);
+                    projectList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"project"} itemId={itemId} setItemId={setItemId} />);
                 }
                 setProject(projectList);
             })
@@ -166,7 +158,7 @@ function User() {
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
                 for(var item of responseCertificate){
-                    certificateList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"certificate"} />);
+                    certificateList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"certificate"} itemId={itemId} setItemId={setItemId} />);
                 }
                 setCertificate(certificateList);
             })
