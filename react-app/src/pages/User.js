@@ -25,11 +25,27 @@ export function PortfolioItemContent(props){
 // PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
 export function PortfolioItem(props){
     var item = props.item;
+    var group = props.group;
     var showItem = [];
+    var itemId = item[0];
+
     for (var content of item) {
-        var data = [{content: content}];
         showItem.push(<PortfolioItemContent content={content} />);
     }
+
+    function deleteHandler(e){
+        e.preventDefault();
+        var data = {id: itemId, group: group}
+        axios.post("http://localhost:5000/user/portfolio/delete", data)
+            .then(function(response){
+                console.log(response.data);
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log("삭제 실패");
+            })
+    }
+
     return(
         <>  
             <Row>
@@ -41,8 +57,8 @@ export function PortfolioItem(props){
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary">수정</Button><br />
-                    <Button variant="danger">삭제</Button>
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
+                    <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>
         </>
@@ -70,16 +86,16 @@ function User() {
     
     // 각 toggle 값에 따라 열어주는 폼이 상이
     if (toggle === "education"){
-        inputForm = (<Education userId={userId} setToggle={setToggle} setEducation={setEducation} education={education} />);
+        inputForm = (<Education userId={userId} setToggle={(group)=>{setToggle(group);}} setEducation={setEducation} education={education} />);
     
     } else if (toggle === "award"){
-        inputForm = (<Award userId={userId} setToggle={setToggle} setAward={setAward} award={award} />);
+        inputForm = (<Award userId={userId} setToggle={(group)=>{setToggle(group);}} setAward={setAward} award={award} />);
 
     } else if (toggle === "project"){
-        inputForm = (<Project userId={userId} setToggle={setToggle} setProject={setProject} project={project} />);
+        inputForm = (<Project userId={userId} setToggle={(group)=>{setToggle(group);}} setProject={setProject} project={project} />);
 
     } else if (toggle === "certificate") {
-        inputForm = (<Certificate userId={userId} setToggle={setToggle} setCertificate={setCertificate} certificate={certificate} />);
+        inputForm = (<Certificate userId={userId} setToggle={(group)=>{setToggle(group);}} setCertificate={setCertificate} certificate={certificate} />);
 
     }
 
@@ -108,7 +124,7 @@ function User() {
                 var responseEducation = response.data.education;
                 var educationList = [];
                 for(var item of responseEducation){
-                    educationList.push(<PortfolioItem item={item}/>);
+                    educationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
                 }
                 setEducation(educationList);
             })
@@ -122,7 +138,7 @@ function User() {
                 var responseAward = response.data.award;
                 var awardList = [];
                 for(var item of responseAward){
-                    awardList.push(<PortfolioItem item={item}/>);
+                    awardList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"award"} />);
                 }
                 setAward(awardList);
             })
@@ -136,7 +152,7 @@ function User() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item}/>);
+                    projectList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"project"} />);
                 }
                 setProject(projectList);
             })
@@ -150,7 +166,7 @@ function User() {
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
                 for(var item of responseCertificate){
-                    certificateList.push(<PortfolioItem item={item}/>);
+                    certificateList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"certificate"} />);
                 }
                 setCertificate(certificateList);
             })

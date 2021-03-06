@@ -14,7 +14,7 @@ function Award(props){
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = "award";
-        var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        var data = {group: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
         .then(function (response){
             var item = [formAward, formAwardDetail];
@@ -35,7 +35,7 @@ function Award(props){
                 <Form.Control type="text" onChange={function (e){setFormAwardDetail(e.target.value)}} placeholder="상세내역 입력" /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
