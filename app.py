@@ -236,7 +236,7 @@ def create():
                 db.commit()
                 return jsonify(status = "success", result = {"project": name, "project_detail": detail, "project_start": start_date, "project_end": end_date, "user_id": user_id})
             
-        elif group == "certi":
+        elif group == "certificate":
             user_id = data.get('user_id')
             name = data.get('certi')
             organization = data.get('certi_detail')

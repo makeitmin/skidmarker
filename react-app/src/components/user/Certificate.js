@@ -26,8 +26,8 @@ function Certificate(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = 'certi'
-        var data = {form_header: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
+        var formHeader = 'certificate'
+        var data = {group: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 var certDate = formDate(formCertDate);
