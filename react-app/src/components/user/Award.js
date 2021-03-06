@@ -14,7 +14,7 @@ function Award(props){
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = "award";
-        var data = {form_header: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
+        var data = {group: formHeader, award: formAward, award_detail: formAwardDetail, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
         .then(function (response){
             var item = [formAward, formAwardDetail];

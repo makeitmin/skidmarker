@@ -157,12 +157,12 @@ def create():
         
         # user 포트폴리오 정보 받아오기
         data = request.get_json()
-        form_header = data.get('form_header')
+        group = data.get('group')
 
         error = None
 
         # form_header(폼 종류)에 따라 분기
-        if form_header == "education":
+        if group == "education":
 
             user_id = data.get('user_id')
             univ_name = data.get('school')
@@ -186,7 +186,7 @@ def create():
                 db.commit()
                 return jsonify(status = "success", result = {"school": univ_name, "major": major, "degree": degree, "user_id": user_id})
 
-        elif form_header == "award":
+        elif group == "award":
 
             user_id = data.get('user_id')
             name = data.get('award')
@@ -206,7 +206,7 @@ def create():
                 db.commit()
                 return jsonify(status = "success", result = {"award": name, "award_detail": detail, "user_id": user_id})
 
-        elif form_header == "project":
+        elif group == "project":
 
             user_id = data.get('user_id')
             name = data.get('project')
@@ -236,7 +236,7 @@ def create():
                 db.commit()
                 return jsonify(status = "success", result = {"project": name, "project_detail": detail, "project_start": start_date, "project_end": end_date, "user_id": user_id})
             
-        elif form_header == "certi":
+        elif group == "certi":
             user_id = data.get('user_id')
             name = data.get('certi')
             organization = data.get('certi_detail')
