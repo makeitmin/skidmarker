@@ -25,6 +25,16 @@ function Network(){
         })
     }, [])
 
+    useEffect(() => {
+        if(!userId) return
+            var data = {userId: userId};
+            axios.get("http://localhost:5000/network", data)
+            .then(function(response){
+                var users = response.data.result;
+                setUsers(users);
+            })
+    }, [userId])
+
     function Logout(){
         sessionStorage.removeItem("token");
         history.replace("/login");
