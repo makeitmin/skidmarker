@@ -325,8 +325,11 @@ def delete():
 @app.route('/network', methods=['GET'])
 def readAll():
     
-    sql = "SELECT `id`, `name`, `email` FROM `user`;
-    cursor.execute(sql)
+    data = request.get_json();
+    user_id = data.get('userId')
+
+    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` != %s";
+    cursor.execute(sql, (user_id,))
     result = cursor.fetchall()
     db.commit()
 
