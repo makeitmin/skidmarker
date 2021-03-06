@@ -184,7 +184,7 @@ function User() {
                             <Nav.Link href="/user">메인</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="/network">네트워크</Nav.Link>
+                            <Nav.Link href="/network">네트워크</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                             { sessionStorage.length !== 0 ? 
