@@ -25,6 +25,7 @@ export function PortfolioItemContent(props){
 // PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
 export function PortfolioItem(props){
     var item = props.item;
+    var group = props.group;
     var showItem = [];
     for (var content of item) {
         var data = [{content: content}];
@@ -41,7 +42,7 @@ export function PortfolioItem(props){
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary">수정</Button><br />
+                    <Button variant="primary" onClick={function(e){props.setToggle(group);}}>수정</Button><br />
                     <Button variant="danger">삭제</Button>
                 </Col>
             </Row>
@@ -122,7 +123,7 @@ function User() {
                 var responseAward = response.data.award;
                 var awardList = [];
                 for(var item of responseAward){
-                    awardList.push(<PortfolioItem item={item}/>);
+                    awardList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"award"} />);
                 }
                 setAward(awardList);
             })
@@ -136,7 +137,7 @@ function User() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item}/>);
+                    projectList.push(<PortfolioItem item={item} />);
                 }
                 setProject(projectList);
             })
