@@ -289,6 +289,58 @@ def read():
 
     return jsonify(status = "success", education = education, award = award, project = project, certificate = certificate)
 
+## UPDATE API
+@app.route('/user/portfolio/update', methods=['GET', 'POST'])
+def update():
+
+    data = request.get_json()
+
+    id = int(data.get('id'))
+    group = data.get('group')
+    
+    if group == "education":
+        univ_name = data.get('univ_name')
+        major = data.get('major')
+        degree = data.get('degree')
+
+        sql_education = "UPDATE `education` SET `univ_name`=%s, `major`=%s, `degree`=%s WHERE `id` = %s"
+        cursor.execute(sql_education, (univ_name, major, degree, id,))
+        db.commit()
+
+    elif group == "award":
+        name = data.get('name')
+        detail = data.get('detail')
+
+        sql_award = "UPDATE `award` SET `name`=%s, `detail`=%s WHERE `id` = %s"
+        cursor.execute(sql_award, (name, detail, id,))
+        db.commit()
+
+    elif group == "project":
+
+        name = data.get('project')
+        detail = data.get('project_detail')
+        start_date = data.get('project_start')
+        start_date = start_date.split("T")[0]
+        end_date = data.get('project_end')
+        end_date = end_date.split("T")[0]
+
+        sql_project = "UPDATE `project` SET `name`=%s, `detail`=%s,`start_date`=%s,`end_date`=%s WHERE `id` = %s"
+        cursor.execute(sql_project, (name, detail, start_date, end_date, id,))
+        db.commit()
+
+    elif group == "certificate":
+
+        name = data.get('name')
+        organization = data.get('organization')
+        acq_date = data.get('acq_date')
+        acq_date = acq_date.split("T")[0]
+
+        sql_certificate = "UPDATE `certificate` SET `name`=%s,`organization`=%s,`acq_date`=%s WHERE `id` = %s"
+        cursor.execute(sql_certificate, (name, organization, acq_date, id, ))
+        db.commit()
+
+    return jsonify(status = "update success")
+
 ## DELETE API
 @app.route('/user/portfolio/delete', methods=['GET', 'POST'])
 def delete():
