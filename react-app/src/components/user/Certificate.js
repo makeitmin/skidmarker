@@ -26,8 +26,8 @@ function Certificate(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        var formHeader = 'certi'
-        var data = {form_header: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
+        var formHeader = 'certificate'
+        var data = {group: formHeader, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: props.userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
                 var certDate = formDate(formCertDate);
@@ -50,7 +50,7 @@ function Certificate(props){
                 <DatePicker selected={formCertDate} dateFormat="yyyy-MM-dd" onChange={date => setFormCertDate(date)} /><br />
                 <center>
                     <Button variant="primary" type="submit">확인</Button>
-                    <Button variant="secondary" onClick={function(e){props.setToggle("")}}>취소</Button>
+                    <Button variant="secondary" onClick={function(e){e.preventDefault(); props.setToggle("")}}>취소</Button>
                 </center>
             </Form>
         </>
