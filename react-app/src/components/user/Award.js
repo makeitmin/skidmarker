@@ -11,6 +11,20 @@ function Award(props){
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
     
+    function updateHandler(e){
+        e.preventDefault();
+        var group = "award";
+        var data = {id: itemId, group: group, name: formAward, detail: formAwardDetail}
+        axios.post("http://localhost:5000/user/portfolio/update", data)
+            .then(function(response){
+                console.log(response.data);
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log("업데이트 실패");
+            })
+    }
+
     function handleSubmit(e){
         e.preventDefault();
         var formHeader = "award";
