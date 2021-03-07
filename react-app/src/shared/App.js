@@ -5,6 +5,7 @@ import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Network from '../pages/Network';
 import User from '../pages/User';
+import OtherUser from '../pages/OtherUser';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,6 +21,7 @@ class App extends Component {
                     <Route path="/user" component={User}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/network" component={Network}/>
+                    <Route path="/other" component={OtherUser}/>
                 </Switch>
             </>
         );
