@@ -387,5 +387,18 @@ def readAll():
 
     return jsonify(status = "success", result = result)
 
+@app.route('/network/other', methods=['POST'])
+def readOne():
+        
+    data = request.get_json();
+    user_id = int(data.get('userId'))
+
+    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` = %s";
+    cursor.execute(sql, (user_id))
+    result = cursor.fetchall()
+    db.commit()
+
+    return jsonify(status = "success", result = result)
+
 if __name__ == '__main__':
     app.run("0.0.0.0", port=5000, threaded = False)

@@ -1,8 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { Nav, Card, Row, Col, Button, Form, CardColumns } from 'react-bootstrap'
+import { Nav, Card, Row, Col, CardColumns } from 'react-bootstrap'
 import './static/css/style.css';
 
 function Network(){
@@ -12,6 +13,8 @@ function Network(){
     const [userId, setUserId] = useState();
     const [users, setUsers] = useState();
     const [network, setNetwork] = useState();
+
+    const [otherUserId, setOtherUserId] = useState();
 
     useEffect(() => { 
         const token = sessionStorage.getItem("token");
@@ -39,20 +42,41 @@ function Network(){
 
     useEffect(() => {
         if(!users) return
-            const network = users.map((user) =>
-            <Card>
-                <Card.Img variant="top" />
-                <Card.Body>
-                <Card.Title>{user[1]}</Card.Title>
-                <Card.Text>
-                    {user[2]}
-                </Card.Text>
-                </Card.Body>
-            </Card>
-            );
+            const network = users.map((user) =>{
+                setOtherUserId(user[0]);
+                return(
+                    <>
+                        <Card>
+                            <Card.Img variant="top" />
+                            <Card.Body>
+                            <Card.Title>
+                                <Link to={{ 
+                                    pathname: "/other", 
+                                    state: user[0]
+                                }}>
+                                {user[1]}
+                                </Link></Card.Title>
+                            <Card.Text>
+                                {user[2]}
+                            </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </>
+                );
+            })
             setNetwork(network);
     }, [users])
+
     
+    function goToUserDetail(otherUserId){
+        history.push({
+            pathname:"/other",
+            state:{
+                key: otherUserId
+             }
+           });
+    }
+
     function Logout(){
         sessionStorage.removeItem("token");
         history.replace("/login");
@@ -71,7 +95,7 @@ function Network(){
                             <Nav.Link href="/user">메인</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="/network">네트워크</Nav.Link>
+                            <Nav.Link href="/network">네트워크</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                             { sessionStorage.length !== 0 ? 

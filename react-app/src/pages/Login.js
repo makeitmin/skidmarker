@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
 import './static/css/login.css'
 
+/* 로그인 Form 컴포넌트 */
 function Login(){
 
     const history = useHistory();
@@ -29,6 +30,7 @@ function Login(){
         history.push("/register");
     }
 
+    // 로그인 요청
     function handleSubmit(e) {
         e.preventDefault();
         var data = {user_email: email, user_password: password};
@@ -38,9 +40,10 @@ function Login(){
                 var res = response.data.access_token
                 setToken(res);
                 history.replace("/user");
+                console.log("로그인 성공");
             })
             .catch((err) => {
-                console.log("전송 에러");
+                console.log("로그인 실패");
             })
     }
     
