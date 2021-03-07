@@ -1,9 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { Nav, Card, Row, Col, Button, Form, CardColumns } from 'react-bootstrap'
+import { Nav, Card, Row, Col, CardColumns } from 'react-bootstrap'
 import './static/css/style.css';
 
 function Network(){

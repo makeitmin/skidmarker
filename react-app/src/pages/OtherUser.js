@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router";
 import axios from 'axios';
 
-import Certificate from '../components/user/Certificate';
-import Award from '../components/user/Award';
-import Project from '../components/user/Project';
-import Education from './../components/user/Education';
-
-import { Nav, Card, Row, Col, Button} from 'react-bootstrap';
-
-import { PortfolioItem } from './User';
+import { Nav, Card, Row, Col } from 'react-bootstrap';
 
 import './static/css/style.css';
 import rachel from './static/images/rachel.gif';
 
+// User.js 의 PortfolioItem 컴포넌트와 유사하나 수정 삭제 버튼이 없어야 해서 새로 생성
 function OtherPortfolioItem({ item, group }){
     var item = item;
     var group = group;
@@ -40,7 +34,7 @@ function OtherPortfolioItem({ item, group }){
     )
 }
 
-/* User 메인 화면 */
+/* OtherUser 메인 화면 */
 function OtherUser(props) {
 
     const history = useHistory();
@@ -56,7 +50,7 @@ function OtherUser(props) {
     const [certificate, setCertificate] = useState();
 
     /* 초기 화면 자동 렌더링 useEffect */
-    // 해당 사용자의 userId 받아오기
+    // 해당 사용자의 userId (otherUserId) 받아오기
     useEffect(() => { 
         var data = {userId: props.location.state};
         axios.post("http://localhost:5000/network/other", data)
