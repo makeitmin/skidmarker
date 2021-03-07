@@ -11,23 +11,19 @@ import { Nav, Card, Row, Col, Button} from 'react-bootstrap';
 import './static/css/style.css';
 import rachel from './static/images/rachel.gif';
 
-/* 포트폴리오 항목들을 UI에 맞게 보여주기 위한 컴포넌트 */
-// PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
-export function PortfolioItem({ item, setToggle, group }){
+function PortfolioItem({ item, group }){
     var item = item;
     var group = group;
     var showItem = [];
     var itemId = item[0];
-    
-    for (var i=1; i<item.length; i++) {
-        showItem.push(<ul>{item[i]}</ul>);
+
+    for (var content of item) {
+        showItem.push(<PortfolioItemContent content={content} />);
     }
 
     function deleteHandler(e){
-        
         e.preventDefault();
         var data = {id: itemId, group: group}
-        console.log(itemId)
         axios.post("http://localhost:5000/user/portfolio/delete", data)
             .then(function(response){
                 console.log(response.data);
@@ -43,14 +39,13 @@ export function PortfolioItem({ item, setToggle, group }){
             <Row>
                 <Col style={{textAlign: "left"}}>
                     <div>
-                        <br />
                         {showItem}
                         <hr />
                     </div>
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary" onClick={function(e){e.preventDefault(); setToggle(group); }}>수정</Button><br />
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
                     <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>
@@ -59,65 +54,40 @@ export function PortfolioItem({ item, setToggle, group }){
 }
 
 /* User 메인 화면 */
-function User() {
+function OtherUser() {
 
     const history = useHistory();
 
     // useState 로 관리
-    const [userId, setUserId] = useState();
-    const [userEmail, setUserEmail] = useState();
-    const [userName, setUserName] = useState();
+    const [otherUserId, setOtherUserId] = useState();
 
     const [education, setEducation] = useState();
     const [award, setAward] = useState();
     const [project, setProject] = useState();
     const [certificate, setCertificate] = useState();
 
-    const [toggle, setToggle] = useState();
-
-    var inputForm = null;
-    
-    // 각 toggle 값에 따라 열어주는 폼이 상이
-    if (toggle === "education"){
-        inputForm = (<Education userId={userId} setToggle={(group)=>{setToggle(group);}} setEducation={setEducation} education={education} />);
-    
-    } else if (toggle === "award"){
-        inputForm = (<Award userId={userId} setToggle={(group)=>{setToggle(group);}} setAward={setAward} award={award} />);
-
-    } else if (toggle === "project"){
-        inputForm = (<Project userId={userId} setToggle={(group)=>{setToggle(group);}} setProject={setProject} project={project} />);
-
-    } else if (toggle === "certificate") {
-        inputForm = (<Certificate userId={userId} setToggle={(group)=>{setToggle(group);}} setCertificate={setCertificate} certificate={certificate} />);
-
-    }
-
     /* 초기 화면 자동 렌더링 useEffect */
-    // 사용자 인증
+    // 해당 사용자의 userId 받아오기
     useEffect(() => { 
-        const token = sessionStorage.getItem("token");
-        axios.get("http://localhost:5000/auth/info", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
+        axios.get("http://localhost:5000/network/user")
         .then(function(response){
-            setUserId(response.data.user_id);
-            setUserEmail(response.data.user_email);
-            setUserName(response.data.user_name);
+            setOtherUserId(response.data.user_id);
+        })
+        .catch((err)=>{
+            console.log("전송 실패");
         })
     }, [])
 
-    // 사용자 인증이 완료되었을 때 각 포트폴리오 그룹(학력, 수상내역, 프로젝트, 자격증)을 불러옴
+    // 각 포트폴리오 그룹(학력, 수상내역, 프로젝트, 자격증)을 불러옴
     useEffect(() => {
-        if(!userId) return
+        if(!otherUserId) return
             var data = {userId: userId};
             axios.post("http://localhost:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseEducation = response.data.education;
                 var educationList = [];
                 for(var item of responseEducation){
-                    educationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
+                    educationList.push(<PortfolioItem item={item} group={"education"} />);
                 }
                 setEducation(educationList);
             })
@@ -131,7 +101,7 @@ function User() {
                 var responseAward = response.data.award;
                 var awardList = [];
                 for(var item of responseAward){
-                    awardList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"award"} />);
+                    awardList.push(<PortfolioItem item={item} group={"award"} />);
                 }
                 setAward(awardList);
             })
@@ -145,7 +115,7 @@ function User() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"project"} />);
+                    projectList.push(<PortfolioItem item={item} group={"project"} />);
                 }
                 setProject(projectList);
             })
@@ -159,7 +129,7 @@ function User() {
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
                 for(var item of responseCertificate){
-                    certificateList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"certificate"} />);
+                    certificateList.push(<PortfolioItem item={item} group={"certificate"} />);
                 }
                 setCertificate(certificateList);
             })
@@ -184,7 +154,7 @@ function User() {
                             <Nav.Link href="/user">메인</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link href="/network">네트워크</Nav.Link>
+                            <Nav.Link eventKey="/network">네트워크</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                             { sessionStorage.length !== 0 ? 
@@ -216,11 +186,7 @@ function User() {
                             <Card.Text>
                                 { education }<br />
                             </Card.Text>
-                            {
-                                toggle === "education" ? inputForm : "" // toggle === education 이면 Education 컴포넌트 호출
-                            }
                             </Card.Body>
-                            <Button variant="light" onClick={function (e){ setToggle("education"); }}>추가하기</Button>
                         </Card><br />
                         <Card>
                             <Card.Body>
@@ -228,11 +194,7 @@ function User() {
                             <Card.Text>
                                 { award }<br />
                             </Card.Text>
-                            {
-                                toggle === "award" ? inputForm : ""
-                            }
                             </Card.Body>
-                            <Button variant="light" onClick={function (e){ setToggle("award"); }}>추가하기</Button>
                         </Card><br />
                         <Card>
                             <Card.Body>
@@ -240,11 +202,7 @@ function User() {
                             <Card.Text>
                                 { project }<br />
                             </Card.Text>
-                            {
-                                toggle === "project" ? inputForm : ""
-                            }
                             </Card.Body>
-                            <Button variant="light" onClick={function (e){ setToggle("project"); }}>추가하기</Button>
                         </Card><br />
                         <Card>
                             <Card.Body>
@@ -252,11 +210,7 @@ function User() {
                             <Card.Text>
                                 { certificate }<br />
                             </Card.Text>
-                            {
-                                toggle === "certificate" ? inputForm : ""
-                            }
                             </Card.Body>
-                            <Button variant="light" onClick={function (e){ setToggle("certificate"); }}>추가하기</Button>
                         </Card>
                     </Col>
                 </Row>
@@ -265,4 +219,4 @@ function User() {
     );
 }
 
-export default User;
+export default OtherUser;
