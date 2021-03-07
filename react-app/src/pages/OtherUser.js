@@ -53,7 +53,7 @@ function OtherUser(props) {
     // 해당 사용자의 userId (otherUserId) 받아오기
     useEffect(() => { 
         var data = {userId: props.location.state};
-        axios.post("http://localhost:5000/network/other", data)
+        axios.post("http://127.0.0.1:5000/network/other", data)
             .then(function(response){
 
                 var result = response.data.result;
@@ -68,7 +68,7 @@ function OtherUser(props) {
     useEffect(() => {
         if(!otherUserId) return
             var data = {userId: otherUserId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseEducation = response.data.education;
                 var educationList = [];
@@ -82,7 +82,7 @@ function OtherUser(props) {
     useEffect(() => {
         if(!otherUserId) return
             var data = {userId: otherUserId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseAward = response.data.award;
                 var awardList = [];
@@ -96,7 +96,7 @@ function OtherUser(props) {
     useEffect(() => {
         if(!otherUserId) return
             var data = {userId: otherUserId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseProject = response.data.project;
                 var projectList = [];
@@ -110,7 +110,7 @@ function OtherUser(props) {
     useEffect(() => {
         if(!otherUserId) return
             var data = {userId: otherUserId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];

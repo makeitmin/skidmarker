@@ -36,7 +36,7 @@ function Award({ userId, setToggle, award, setAward }){
     function handleSubmit(e){
         e.preventDefault();
         var data = {group: group, award: formAward, award_detail: formAwardDetail, user_id: userId};
-        axios.post("http://localhost:5000/user/portfolio/create", data)
+        axios.post("http://127.0.0.1:5000/user/portfolio/create", data)
         .then(function (response){
             var formId = response.data.result[0];
             var item = [formId, formAward, formAwardDetail];

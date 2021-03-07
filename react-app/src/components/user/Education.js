@@ -23,7 +23,7 @@ function Education({ userId, item, setToggle, education, setEducation }){
         e.preventDefault();
         var group = 'education'
         var data = {group: group, school: formSchool, major: formMajor, degree: formDegree, user_id: userId};
-        axios.post("http://localhost:5000/user/portfolio/create", data)
+        axios.post("http://127.0.0.1:5000/user/portfolio/create", data)
             .then(function (response){
                 var formId = response.data.result[0];
                 var item = [formId, formSchool, formMajor, formDegree];

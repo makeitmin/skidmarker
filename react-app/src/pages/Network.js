@@ -87,7 +87,7 @@ function Network(){
 
     function handleSearch(){
         var data = {keyword: keyword};
-        axios.post("http://localhost:5000/network/search", data)
+        axios.post("http://127.0.0.1:5000/network/search", data)
         .then(function(response){
             setUsers(response.data.result);
         })

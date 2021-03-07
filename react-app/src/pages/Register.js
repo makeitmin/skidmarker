@@ -48,7 +48,7 @@ function Register(props){
         e.preventDefault();
         var data = {user_email: email, user_password: password, user_name: name};
         
-        axios.post("http://localhost:5000/auth/register", data)
+        axios.post("http://127.0.0.1:5000/auth/register", data)
             .then(function (){
                 console.log("회원가입 성공");
             })

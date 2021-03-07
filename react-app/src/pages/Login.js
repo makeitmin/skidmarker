@@ -35,7 +35,7 @@ function Login(){
         e.preventDefault();
         var data = {user_email: email, user_password: password};
         
-        axios.post("http://localhost:5000/auth/login", data)
+        axios.post("http://127.0.0.1:5000/auth/login", data)
             .then(function (response){
                 var res = response.data.access_token
                 setToken(res);
