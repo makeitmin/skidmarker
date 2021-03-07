@@ -9,6 +9,7 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
+/* 프로젝트 입력하는 Form 컴포넌트 */
 function Project({ userId, item, setToggle, project, setProject }){
 
     const [formProject, setFormProject] = useState();
@@ -19,6 +20,7 @@ function Project({ userId, item, setToggle, project, setProject }){
 
     var group = 'project';
 
+    // 날짜 포맷 함수
     function formDate(_date){
         var date = _date;
         var year = date.getFullYear();
@@ -28,9 +30,9 @@ function Project({ userId, item, setToggle, project, setProject }){
         return year+"-"+month+"-"+day;
     }
 
+    // 프로젝트 create
     function handleSubmit(e){
         e.preventDefault();
-        
         var data = {group: group, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
@@ -43,7 +45,7 @@ function Project({ userId, item, setToggle, project, setProject }){
                 setToggle("");
             })
             .catch((err) => {
-                console.log("전송 에러");
+                console.log("프로젝트 생성 실패");
             })
     }
 
