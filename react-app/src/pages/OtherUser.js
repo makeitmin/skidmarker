@@ -14,8 +14,34 @@ import { PortfolioItem } from './User';
 import './static/css/style.css';
 import rachel from './static/images/rachel.gif';
 
+function OtherPortfolioItem({ item, group }){
+    var item = item;
+    var group = group;
+    var showItem = [];
+    var itemId = item[0];
+    
+    for (var i=1; i<item.length; i++) {
+        showItem.push(<ul>{item[i]}</ul>);
+    }
+
+    return(
+        <>  
+            <Row>
+                <Col style={{textAlign: "left"}}>
+                    <div>
+                        <br />
+                        {showItem}
+                        <hr />
+                    </div>
+                    
+                </Col>
+            </Row>
+        </>
+    )
+}
+
 /* User 메인 화면 */
-function OtherUser() {
+function OtherUser(props) {
 
     const history = useHistory();
 
@@ -32,13 +58,16 @@ function OtherUser() {
     /* 초기 화면 자동 렌더링 useEffect */
     // 해당 사용자의 userId 받아오기
     useEffect(() => { 
-        axios.get("http://localhost:5000/network/user")
-        .then(function(response){
-            setOtherUserId(response.data.user_id);
-        })
-        .catch((err)=>{
-            console.log("전송 실패");
-        })
+        var data = {userId: props.location.state};
+        axios.post("http://localhost:5000/network/other", data)
+            .then(function(response){
+
+                var result = response.data.result;
+                console.log(result[0][0]);
+                setOtherUserId(result[0][0]);
+                setOtherUserName(result[0][1]);
+                setOtherUserEmail(result[0][2]);
+            })
     }, [])
 
     // 각 포트폴리오 그룹(학력, 수상내역, 프로젝트, 자격증)을 불러옴
@@ -50,7 +79,7 @@ function OtherUser() {
                 var responseEducation = response.data.education;
                 var educationList = [];
                 for(var item of responseEducation){
-                    educationList.push(<PortfolioItem item={item} group={"education"} />);
+                    educationList.push(<OtherPortfolioItem item={item} group={"education"} />);
                 }
                 setEducation(educationList);
             })
@@ -64,7 +93,7 @@ function OtherUser() {
                 var responseAward = response.data.award;
                 var awardList = [];
                 for(var item of responseAward){
-                    awardList.push(<PortfolioItem item={item} group={"award"} />);
+                    awardList.push(<OtherPortfolioItem item={item} group={"award"} />);
                 }
                 setAward(awardList);
             })
@@ -78,7 +107,7 @@ function OtherUser() {
                 var responseProject = response.data.project;
                 var projectList = [];
                 for(var item of responseProject){
-                    projectList.push(<PortfolioItem item={item} group={"project"} />);
+                    projectList.push(<OtherPortfolioItem item={item} group={"project"} />);
                 }
                 setProject(projectList);
             })
@@ -92,7 +121,7 @@ function OtherUser() {
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
                 for(var item of responseCertificate){
-                    certificateList.push(<PortfolioItem item={item} group={"certificate"} />);
+                    certificateList.push(<OtherPortfolioItem item={item} group={"certificate"} />);
                 }
                 setCertificate(certificateList);
             })
@@ -136,8 +165,6 @@ function OtherUser() {
                             <Card.Text>
                                 {otherUserEmail}<br /><br />
                                 엘리스 AI 트랙 1기<br />
-                                - 미니 프로젝트 1팀<br />
-                                - 레이서 포트폴리오 2팀
                             </Card.Text>
                             </Card.Body>
                         </Card>
