@@ -25,7 +25,8 @@ function Education({ userId, item, setToggle, education, setEducation }){
         var data = {group: group, school: formSchool, major: formMajor, degree: formDegree, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
-                var item = [formSchool, formMajor, formDegree];
+                var formId = response.data.result[0];
+                var item = [formId, formSchool, formMajor, formDegree];
                 var newEducationList = [...education];
                 newEducationList.push(<PortfolioItem item={item} setToggle={(group)=>{setToggle(group);}} group={"education"} />);
                 setEducation(newEducationList);

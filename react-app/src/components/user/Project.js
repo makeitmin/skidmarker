@@ -36,9 +36,10 @@ function Project({ userId, item, setToggle, project, setProject }){
         var data = {group: group, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
+                var formId = response.data.result[0];
                 var startDate = formDate(formStartDate);
                 var endDate = formDate(formEndDate);
-                var item = [formProject, formProjectDetail, startDate, endDate];
+                var item = [formId, formProject, formProjectDetail, startDate, endDate];
                 var newProjectList = [...project];
                 newProjectList.push(<PortfolioItem item={item}/>);
                 setProject(newProjectList);

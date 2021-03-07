@@ -35,8 +35,9 @@ function Certificate({ userId, setToggle, certificate, setCertificate }){
         var data = {group: group, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
             .then(function (response){
+                var formId = response.data.result[0];
                 var certDate = formDate(formCertDate);
-                var item = [formCert, formCertOrg, certDate];
+                var item = [formId, formCert, formCertOrg, certDate];
                 var newCertificateList = [...certificate];
                 newCertificateList.push(<PortfolioItem item={item}/>);
                 setCertificate(newCertificateList);
