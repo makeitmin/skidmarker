@@ -380,7 +380,7 @@ def readAll():
     data = request.get_json();
     user_id = data.get('userId')
 
-    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` != %s";
+    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` != %s"
     cursor.execute(sql, (user_id))
     result = cursor.fetchall()
     db.commit()
@@ -393,8 +393,21 @@ def readOne():
     data = request.get_json();
     user_id = int(data.get('userId'))
 
-    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` = %s";
+    sql = "SELECT `id`, `name`, `email` FROM `user` WHERE `id` = %s"
     cursor.execute(sql, (user_id))
+    result = cursor.fetchall()
+    db.commit()
+
+    return jsonify(status = "success", result = result)
+
+@app.route('/network/search', methods=['POST'])
+def search():
+        
+    data = request.get_json();
+    keyword = data.get('keyword')
+
+    sql = f"SELECT `id`, `name`, `email` FROM `user` WHERE `name` LIKE %s"
+    cursor.execute(sql,("%"+keyword+"%",))
     result = cursor.fetchall()
     db.commit()
 
