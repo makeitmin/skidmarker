@@ -38,7 +38,8 @@ function Award({ userId, setToggle, award, setAward }){
         var data = {group: group, award: formAward, award_detail: formAwardDetail, user_id: userId};
         axios.post("http://localhost:5000/user/portfolio/create", data)
         .then(function (response){
-            var item = [formAward, formAwardDetail];
+            var formId = response.data.result[0];
+            var item = [formId, formAward, formAwardDetail];
             var newAwardList = [...award];
             newAwardList.push(<PortfolioItem item={item}/>);
             setAward(newAwardList);

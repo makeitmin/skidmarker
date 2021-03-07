@@ -184,7 +184,12 @@ def create():
                 sql = "INSERT INTO `education` (`univ_name`, `major`,`degree`,`user_id`) VALUES (%s, %s, %s, %s)"
                 cursor.execute(sql, (univ_name, major, degree, user_id,))
                 db.commit()
-                return jsonify(status = "success", result = {"school": univ_name, "major": major, "degree": degree, "user_id": user_id})
+
+                sql = "SELECT `id`, `univ_name`, `major`, `degree` FROM `education` ORDER BY `user_id` DESC LIMIT 1"
+                cursor.execute(sql)
+                education = cursor.fetchone()
+                db.commit()
+                return jsonify(status = "success", result = education )
 
         elif group == "award":
 
@@ -204,7 +209,12 @@ def create():
                 sql = "INSERT INTO `award` (`name`, `detail`,`user_id`) VALUES (%s, %s, %s)"
                 cursor.execute(sql, (name, detail, user_id,))
                 db.commit()
-                return jsonify(status = "success", result = {"award": name, "award_detail": detail, "user_id": user_id})
+                
+                sql = "SELECT `id`, `name`, `detail` FROM `award` ORDER BY `id` DESC LIMIT 1"
+                cursor.execute(sql)
+                award = cursor.fetchone()
+                db.commit()
+                return jsonify(status = "success", result = award )
 
         elif group == "project":
 
@@ -234,7 +244,12 @@ def create():
                 sql = "INSERT INTO `project` (`name`, `detail`,`start_date`,`end_date`,`user_id`) VALUES (%s, %s, %s, %s, %s)"
                 cursor.execute(sql, (name, detail, start_date, end_date, user_id,))
                 db.commit()
-                return jsonify(status = "success", result = {"project": name, "project_detail": detail, "project_start": start_date, "project_end": end_date, "user_id": user_id})
+                
+                sql = "SELECT `id`, `name`, `detail` FROM `project` ORDER BY `id` DESC LIMIT 1"
+                cursor.execute(sql)
+                project = cursor.fetchone()
+                db.commit()
+                return jsonify(status = "success", result = project )
             
         elif group == "certificate":
             user_id = data.get('user_id')
@@ -255,7 +270,12 @@ def create():
                 sql = "INSERT INTO `certificate` (`name`, `organization`,`acq_date`,`user_id`) VALUES (%s, %s, %s, %s)"
                 cursor.execute(sql, (name, organization, acq_date, user_id,))
                 db.commit()
-                return jsonify(status = "success", result = {"certi": name, "certi_detail": organization, "certi_date": acq_date, "user_id": user_id})
+                
+                sql = "SELECT `id`, `name`, `organization` FROM `certificate` ORDER BY `id` DESC LIMIT 1"
+                cursor.execute(sql)
+                certificate = cursor.fetchone()
+                db.commit()
+                return jsonify(status = "success", result = certificate )
 
     # 유효성 검증 미통과 시 에러 메세지 반환
     return jsonify(status = "fail", result = {"error": error})
