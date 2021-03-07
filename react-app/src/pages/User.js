@@ -12,30 +12,22 @@ import './static/css/style.css';
 import rachel from './static/images/rachel.gif';
 
 /* 포트폴리오 항목들을 UI에 맞게 보여주기 위한 컴포넌트 */
-// 포트폴리오 항목 1개 안의 1개 요소를 표시(ex. 엘리스대학교)
-export function PortfolioItemContent(props){
-    var content = props.content;
-    return(
-        <>
-            {content}<br />
-        </>
-    )
-}
-
 // PortfolioItemContent를 반복하여 포트폴리오 항목 1개의 배열을 표시 (ex. 엘리스대학교 컴퓨터공학과 학사졸업)
-export function PortfolioItem(props){
-    var item = props.item;
-    var group = props.group;
+export function PortfolioItem({ item, setToggle, group }){
+    var item = item;
+    var group = group;
     var showItem = [];
     var itemId = item[0];
-
-    for (var content of item) {
-        showItem.push(<PortfolioItemContent content={content} />);
+    
+    for (var i=1; i<item.length; i++) {
+        showItem.push(<ul>{item[i]}</ul>);
     }
 
     function deleteHandler(e){
+        
         e.preventDefault();
         var data = {id: itemId, group: group}
+        console.log(itemId)
         axios.post("http://localhost:5000/user/portfolio/delete", data)
             .then(function(response){
                 console.log(response.data);
@@ -51,13 +43,14 @@ export function PortfolioItem(props){
             <Row>
                 <Col style={{textAlign: "left"}}>
                     <div>
+                        <br />
                         {showItem}
                         <hr />
                     </div>
                     
                 </Col>
                 <Col md="auto" style={{textAlign: "right"}}>
-                    <Button variant="primary" onClick={function(e){e.preventDefault(); props.setToggle(group);}}>수정</Button><br />
+                    <Button variant="primary" onClick={function(e){e.preventDefault(); setToggle(group); }}>수정</Button><br />
                     <Button variant="danger" onClick={deleteHandler}>삭제</Button>
                 </Col>
             </Row>
@@ -191,7 +184,7 @@ function User() {
                             <Nav.Link href="/user">메인</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="/network">네트워크</Nav.Link>
+                            <Nav.Link href="/network">네트워크</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                             { sessionStorage.length !== 0 ? 
