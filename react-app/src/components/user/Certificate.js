@@ -33,7 +33,7 @@ function Certificate({ userId, setToggle, certificate, setCertificate }){
         e.preventDefault();
         
         var data = {group: group, certi: formCert, certi_detail: formCertOrg, certi_date: formCertDate, user_id: userId};
-        axios.post("http://localhost:5000/user/portfolio/create", data)
+        axios.post("http://127.0.0.1:5000/user/portfolio/create", data)
             .then(function (response){
                 var formId = response.data.result[0];
                 var certDate = formDate(formCertDate);

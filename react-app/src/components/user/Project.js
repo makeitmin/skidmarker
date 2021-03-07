@@ -34,7 +34,7 @@ function Project({ userId, item, setToggle, project, setProject }){
     function handleSubmit(e){
         e.preventDefault();
         var data = {group: group, project: formProject, project_detail: formProjectDetail, project_start: formStartDate, project_end: formEndDate, user_id: userId};
-        axios.post("http://localhost:5000/user/portfolio/create", data)
+        axios.post("http://127.0.0.1:5000/user/portfolio/create", data)
             .then(function (response){
                 var formId = response.data.result[0];
                 var startDate = formDate(formStartDate);

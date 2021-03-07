@@ -94,7 +94,7 @@ function User() {
     // 사용자 인증
     useEffect(() => { 
         const token = sessionStorage.getItem("token");
-        axios.get("http://localhost:5000/auth/info", {
+        axios.get("http://127.0.0.1:5000/auth/info", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -110,7 +110,7 @@ function User() {
     useEffect(() => {
         if(!userId) return
             var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseEducation = response.data.education;
                 var educationList = [];
@@ -124,7 +124,7 @@ function User() {
     useEffect(() => {
         if(!userId) return
             var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseAward = response.data.award;
                 var awardList = [];
@@ -138,7 +138,7 @@ function User() {
     useEffect(() => {
         if(!userId) return
             var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseProject = response.data.project;
                 var projectList = [];
@@ -152,7 +152,7 @@ function User() {
     useEffect(() => {
         if(!userId) return
             var data = {userId: userId};
-            axios.post("http://localhost:5000/user/portfolio/read", data)
+            axios.post("http://127.0.0.1:5000/user/portfolio/read", data)
             .then(function(response){
                 var responseCertificate = response.data.certificate;
                 var certificateList = [];
