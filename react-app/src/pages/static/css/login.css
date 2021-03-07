@@ -1,7 +1,9 @@
- 
 .form-control {
     width: 50% !important;
 }
 form-group .form-label {
     text-align: left !important;;
+}
+.warning {
+    width: 50% !important;
 }
