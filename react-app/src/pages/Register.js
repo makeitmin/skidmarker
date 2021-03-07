@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
+import { Nav, Row, Col, Button, Form, Alert } from 'react-bootstrap'
 import './static/css/login.css'
+
+function Warning(){
+    const warning = ['danger'].map((variant, idx) => (
+        <Alert key={idx} variant={variant}>
+          비밀번호가 일치하지 않습니다. 다시 입력해주세요.
+        </Alert>
+    ));
+    return(
+        <>
+            <div class="warning">
+                {warning}
+            </div>
+        </>
+    );
+}
 
 /* 회원가입 Form 컴포넌트 */
 function Register(props){
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [passwordCheck, setPasswordCheck] = useState();
     const [name, setName] = useState();
 
     function handleChangeEmail(e){
@@ -16,6 +32,11 @@ function Register(props){
 
     function handleChangePassword(e){
         setPassword(e.target.value);
+        setPasswordCheck(e.target.value);
+    }
+
+    function handleChangePasswordCheck(e){
+        setPasswordCheck(e.target.value);
     }
 
     function handleChangeName(e){
@@ -65,6 +86,10 @@ function Register(props){
                     
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" onChange={handleChangePassword} placeholder="Enter Password" />
+
+                    <Form.Label>Password Check</Form.Label>
+                    <Form.Control type="password" onChange={handleChangePasswordCheck} placeholder="Enter Password" />
+                    {password !== passwordCheck ? <Warning /> : ""}
 
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text" onChange={handleChangeName} placeholder="Enter Name" /><br />
