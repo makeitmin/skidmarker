@@ -9,7 +9,8 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Certificate({ userId, item, setToggle, certificate, setCertificate }){
+/* 자격증 입력하는 Form 컴포넌트 */
+function Certificate({ userId, setToggle, certificate, setCertificate }){
 
     const [formCert, setFormCert] = useState();
     const [formCertOrg, setFormCertOrg] = useState();
@@ -17,6 +18,7 @@ function Certificate({ userId, item, setToggle, certificate, setCertificate }){
     
     var group = 'certificate';
 
+    // 날짜 포맷 함수
     function formDate(_date){
         var date = _date;
         var year = date.getFullYear();
@@ -26,6 +28,7 @@ function Certificate({ userId, item, setToggle, certificate, setCertificate }){
         return year+"-"+month+"-"+day;
     }
 
+    // 자격증 Create
     function handleSubmit(e){
         e.preventDefault();
         
@@ -40,7 +43,7 @@ function Certificate({ userId, item, setToggle, certificate, setCertificate }){
                 setToggle("");
             })
             .catch((err) => {
-                console.log("전송 에러");
+                console.log("자격증 생성 실패");
             })
     }
 
@@ -58,4 +61,5 @@ function Certificate({ userId, item, setToggle, certificate, setCertificate }){
         </>
     )
 }
+
 export default Certificate;

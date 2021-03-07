@@ -6,16 +6,19 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
+/* 학력 입력하는 Form 컴포넌트 */
 function Education({ userId, item, setToggle, education, setEducation }){
     
     const [formSchool, setFormSchool] = useState();
     const [formMajor, setFormMajor] = useState();
     const [formDegree, setFormDegree] = useState();
 
+    // 학위 Radio Button 값 입력
     function handleChangeRadio (e) {
         setFormDegree(e.target.value);
       };      
 
+    // 학력 Create
     function handleSubmit(e){
         e.preventDefault();
         var group = 'education'
@@ -29,7 +32,7 @@ function Education({ userId, item, setToggle, education, setEducation }){
                 setToggle("");
             })
             .catch((err) => {
-                console.log("전송 에러");
+                console.log("학력 생성 실패");
             })
     }
 

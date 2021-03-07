@@ -6,14 +6,17 @@ import '../../pages/static/css/style.css';
 
 import { PortfolioItem } from '../../pages/User';
 
-function Award({ userId, item, setToggle, award, setAward }){
+/* 수상내역 입력하는 Form 컴포넌트 */
+function Award({ userId, setToggle, award, setAward }){
 
     const [formAward, setFormAward] = useState();
     const [formAwardDetail, setFormAwardDetail] = useState();
     
     var group = "award";
 
-    var itemId = 0;
+    // 수정 기능 구현 예정
+    /*
+    var itemId = 0; 
 
     function updateHandler(e){
         e.preventDefault();
@@ -27,7 +30,9 @@ function Award({ userId, item, setToggle, award, setAward }){
                 console.log("업데이트 실패");
             })
     }
+    */
 
+    // 수상내역 Create
     function handleSubmit(e){
         e.preventDefault();
         var data = {group: group, award: formAward, award_detail: formAwardDetail, user_id: userId};
@@ -40,7 +45,7 @@ function Award({ userId, item, setToggle, award, setAward }){
             setToggle("");
         })
         .catch((err) => {
-            console.log("전송 에러");
+            console.log("수상내역 생성 실패");
         })
     }
 

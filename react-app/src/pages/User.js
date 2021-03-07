@@ -27,14 +27,12 @@ export function PortfolioItem({ item, setToggle, group }){
         
         e.preventDefault();
         var data = {id: itemId, group: group}
-        console.log(itemId)
         axios.post("http://localhost:5000/user/portfolio/delete", data)
             .then(function(response){
-                console.log(response.data);
                 window.location.reload();
             })
             .catch((err) => {
-                console.log("삭제 실패");
+                console.log(group + "삭제 실패");
             })
     }
 
