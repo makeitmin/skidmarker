@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { Nav, Card, Row, Col, CardColumns } from 'react-bootstrap'
+import { Nav, Card, Row, Col, CardColumns, InputGroup, FormControl, Button } from 'react-bootstrap'
 import './static/css/style.css';
 
 function Network(){
@@ -12,9 +12,12 @@ function Network(){
 
     const [userId, setUserId] = useState();
     const [users, setUsers] = useState();
+    const [searchUsers, setSearchUsers] = useState();
     const [network, setNetwork] = useState();
 
     const [otherUserId, setOtherUserId] = useState();
+
+    const[keyword, setKeyword] = useState();
 
     useEffect(() => { 
         const token = sessionStorage.getItem("token");
@@ -77,6 +80,22 @@ function Network(){
            });
     }
 
+    function search(e){
+        e.preventDefault();
+        setKeyword(e.target.value);
+    }
+
+    function handleSearch(){
+        var data = {keyword: keyword};
+        axios.post("http://localhost:5000/network/search", data)
+        .then(function(response){
+            setUsers(response.data.result);
+        })
+        .catch((err) => {
+            console.log("검색 실패");
+        })
+    }
+
     function Logout(){
         sessionStorage.removeItem("token");
         history.replace("/login");
@@ -105,10 +124,27 @@ function Network(){
                         </Nav>
                     </Col>
                 </Row>
-                <Row>
-                    <CardColumns>
-                        {network}
-                    </CardColumns>
+                <Row className='justify-content-md-center'>
+                    <div class="search">
+                        <InputGroup className="mb-3">
+                            <FormControl
+                            placeholder="사용자 검색"
+                            aria-label="사용자 검색"
+                            aria-describedby="basic-addon2"
+                            onChange={search}
+                            />
+                            <InputGroup.Append>
+                            <Button variant="outline-secondary" onClick={handleSearch}>검색</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </div>
+                </Row>
+                <Row className='justify-content-md-center'>
+                    <div class="cards">
+                        <CardColumns>
+                            {network}
+                        </CardColumns>
+                    </div>
                 </Row>
             </div>
         </>
