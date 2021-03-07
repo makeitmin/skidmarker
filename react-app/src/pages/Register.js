@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Nav, Row, Col, Button, Form } from 'react-bootstrap'
 import './static/css/login.css'
 
+/* 회원가입 Form 컴포넌트 */
 function Register(props){
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -21,16 +22,17 @@ function Register(props){
         setName(e.target.value);
     }
 
+    // 회원가입 요청
     function handleSubmit(e) {
         e.preventDefault();
         var data = {user_email: email, user_password: password, user_name: name};
         
         axios.post("http://localhost:5000/auth/register", data)
             .then(function (){
-                console.log("전송 성공");
+                console.log("회원가입 성공");
             })
             .catch((err) => {
-                console.log('전송 에러');
+                console.log('회원가입 실패');
             })
         props.history.push("/login");
     }
