@@ -4,8 +4,6 @@
 
 Microsoft Azure VM을 기반으로 Flask(Back-End)와 React(Front-End)로 동작하며, MySQL DB를 사용합니다. 개발사항은 수시로 갱신됩니다.  
 
-멋진 자취를 남겨보세요! :point_right: [Skidmarker Demo](http://elice-kdt-ai-track-vm-racer-48.koreacentral.cloudapp.azure.com/) :point_left:
-
 
 ## Getting Started
 
